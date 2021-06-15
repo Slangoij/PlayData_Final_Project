@@ -45,15 +45,16 @@ while True:
         # input_arr에 데이터가 있으면 이미지 파일 생성후 전달.
         if input_arr: 
             prev_x, prev_y = input_arr[0]
-            trans_color = 5  # 색 변화를 위해
+            trans_red, trans_blue = 255,  0  # 색 변화를 확실히 대조 시키기 위해 2가지 색 조절
             for i in input_arr:
                 curr_x, curr_y = i
-                cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), 15)
+                cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (trans_blue, 0, trans_red), 15)
                 prev_x, prev_y = curr_x, curr_y
-                if trans_color < 255:
-                    trans_color += 25
+                if trans_blue < 255 and trans_red > 0:
+                    trans_blue += 5
+                    trans_red -= 5
                 else:
-                    trans_color = 255
+                    trans_blue, trans_red = 255, 0
 
             # output값을 보기 위한 png파일 변환
             t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
