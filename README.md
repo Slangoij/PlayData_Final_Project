@@ -3,3 +3,4 @@
 
 ## 참고 자료1
 - [virtual painter](https://www.youtube.com/watch?v=ZiwZaAVbXQo)
+- [Real-Time Hand Gesture 논문](https://www.koreascience.or.kr/article/JAKO201919866854640.pdf)
