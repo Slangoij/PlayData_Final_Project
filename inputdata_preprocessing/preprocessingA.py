@@ -38,16 +38,22 @@ while True:
     # if (success is True) and (curr_time > 1. / FPS):
     #     prev_time = time.time()
 
-    # 손 인식이 안되면 input_arr 초기화
+    # 손 인식이안되면 input_arr를 확인
+    # 명령어를 입력하고 떠난 손동작에 대해서는 이미지생성.
+    # input_arr에 데이터가 없으면 계속 landmark_list를 확인.
     if len(landmark_list) == 0:
-        if input_arr:
+        # input_arr에 데이터가 있으면 이미지 파일 생성후 전달.
+        if input_arr: 
             prev_x, prev_y = input_arr[0]
             trans_color = 5  # 색 변화를 위해
             for i in input_arr:
                 curr_x, curr_y = i
                 cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), 15)
                 prev_x, prev_y = curr_x, curr_y
-                trans_color += 5
+                if trans_color < 255:
+                    trans_color += 25
+                else:
+                    trans_color = 255
 
             # output값을 보기 위한 png파일 변환
             t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
@@ -55,6 +61,7 @@ while True:
 
             Canvas = np.zeros((720, 1280, 3), np.uint8)  # Canvas 초기화
             input_arr.clear()
+
     else:
         input_arr.append(landmark_list[8][1:])
     cv2.imshow('img', img)
