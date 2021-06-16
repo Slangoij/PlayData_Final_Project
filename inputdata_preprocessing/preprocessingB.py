@@ -10,7 +10,7 @@ import datetime
 wCam, hCam = 640, 360
 ####################################################################
 
-detector = htm.handDetector(detectionCon=0.75)
+detector = htm.handDetector(detectionCon=0.75, maxHands=1)
 
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
@@ -19,16 +19,15 @@ cap.set(4, hCam)
 # model input값 초기화 이하 Canvas
 Canvas = np.zeros((hCam, wCam, 3), np.uint8)
 input_arr = []  # frame 저장 변수
-line_thickness = 10
+line_thickness = 3
 finger_num = 9
+
 ########
 prev_time = 0
 FPS = 30
 ########
 
-
 img_path = './img'
-file_name_cnt = 0  # img파일 이름 중복 방지
 
 while True:
     success, img = cap.read()
@@ -48,27 +47,15 @@ while True:
                 prev_x, prev_y = input_arr[0]
                 trans_color = 5  # 색 변화를 위해
                 for i in range(len(input_arr)):
-                    # curr_x, curr_y = i
-                    # cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), 15)
-                    # prev_x, prev_y = curr_x, curr_y
-                    # if trans_color < 255:
-                    #     trans_color += 25
-                    # else:
-                    #     trans_color = 255
-                    if i < 5:
-                        curr_x, curr_y = input_arr[i]
-                        cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
-                        prev_x, prev_y = curr_x, curr_y
-                    else:
-                        curr_x, curr_y = input_arr[i]
-                        cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, 255), line_thickness)
-                        prev_x, prev_y = curr_x, curr_y
-
+                    if i > 5:
+                        trans_color = 255
+                    curr_x, curr_y = input_arr[i]
+                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
+                    prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
                 t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
                 cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-
                 Canvas = np.zeros((hCam, wCam, 3), np.uint8)  # Canvas 초기화
                 input_arr.clear()
 
@@ -76,34 +63,23 @@ while True:
         else:
             if len(input_arr) < 30:
                 input_arr.append(landmark_list[finger_num][1:])
-            # input_arr 길이가 40이면  Canvas에 그리기
+            # input_arr 길이가 30이면  Canvas에 그리기
             if len(input_arr) == 30:
                 prev_x, prev_y = input_arr[0]
                 trans_color = 5  # 색 변화를 위해
                 for i in range(1, 30):
-                    # curr_x, curr_y = input_arr[i]
-                    # cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), 15)
-                    # prev_x, prev_y = curr_x, curr_y
-                    # if trans_color < 255:
-                    #     trans_color += 25
-                    # else:
-                    #     trans_color = 255
-                    if i < 5:
-                        curr_x, curr_y = input_arr[i]
-                        cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
-                        prev_x, prev_y = curr_x, curr_y
-                    else:
-                        curr_x, curr_y = input_arr[i]
-                        cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, 255), line_thickness)
-                        prev_x, prev_y = curr_x, curr_y
+                    if i > 5:
+                        trans_color = 255
+                    curr_x, curr_y = input_arr[i]
+                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
+                    prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
                 t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
                 cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-                # file_name_cnt += 1
                 Canvas = np.zeros((hCam, wCam, 3), np.uint8)  # Canvas 초기화
 
-                # 먼저 들어온 데이터 빼기(수정 필요)
+                # 먼저 들어온 데이터 빼기
                 input_arr = input_arr[10:]
     cv2.imshow('img', img)
     cv2.waitKey(1)
