@@ -67,13 +67,13 @@ while True:
             Canvas = img_to_array(Canvas)
             Canvas = Canvas[np.newaxis, ...]
             Canvas = Canvas/255.
-            [[0.3, 0.2, 0.5]]
             pred = gesture_model.predict(Canvas)
             print('#######################')
             print(pred)
-            print(max(pred[0]))
+            idx = np.argmax(pred[0])
+            print(idx)
             print('#######################')
-            window_controller(max(pred[0]))
+            window_controller(idx)
             Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
             # 먼저 들어온 데이터 빼기(수정 필요)
