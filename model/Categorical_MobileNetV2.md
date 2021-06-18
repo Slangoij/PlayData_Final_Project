@@ -1,10 +1,13 @@
 ```python
+#@title Categorical_MobileNetV2.md
+#@markdown colab 사용
 from google.colab import drive
 drive.mount('/content/gdrive/')
 ```
 
 
 ```python
+# library import
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -20,7 +23,6 @@ from os import rename, listdir
 from keras.preprocessing.image import ImageDataGenerator
 # split data
 from sklearn.model_selection import train_test_split
-# library import
 import re
 import random
 import xml.etree.ElementTree as et
@@ -32,25 +34,16 @@ from matplotlib.patches import Rectangle # 바운딩 박스를 그림
 
  # import the necessary packages
 from tensorflow.keras.applications import MobileNetV2
-from tensorflow.keras.layers import AveragePooling2D
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Input
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.preprocessing.image import load_img
+from tensorflow.keras.layers import AveragePooling2D
+from tensorflow.keras.layers import Dropout, Flatten, Dense, Input, Model
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.metrics import classification_report
 from imutils import paths
 import matplotlib.pyplot as plt
 import argparse
-
-# EfficientNetB0
-from tensorflow.keras.applications import EfficientNetB0
 
 # print(tf.__version__)
 # print(keras.__version__)
@@ -60,32 +53,30 @@ tf.random.set_seed(1)
 
 
 ```python
+# 파이썬 매직코드
 !pwd
 ```
 
 
 ```python
-#data/train
+# 리눅스 코드
+# 경로 설정
 %cd /content/gdrive/My\ Drive/final_project
 ```
 
 
 ```python
+#@markdown 현재 경로
 os.getcwd()
 ```
 
 
 ```python
 PATH = "./data"
-# 카피
+
 img_file_list = os.listdir(PATH) # IMAGE_PATH에 있는 파일/폴더명 조회
-# print(img_file_list[:30])
 print(len(img_file_list))
 print(img_file_list)
-```
-
-
-```python
 print(os.listdir('./data/original'))
 print(os.listdir('./data/original/fast_forward'))
 ```
@@ -98,17 +89,13 @@ print(os.listdir('./data/original/fast_forward'))
 # https://tykimos.github.io/2017/06/10/CNN_Data_Augmentation/
 ORIGINAL_PATH = './data/original/'
 for p in os.listdir(ORIGINAL_PATH):
-    # print(p)
     PATH = p
 
     data_datagen = ImageDataGenerator(rescale=1./255,
                                     rotation_range=3, # 지정된 각도 범위 내에서 임의로 원본 이미지 회전
-                                    #    shear_range=0.5,  
                                     width_shift_range=0.1,
                                     height_shift_range=0.1,
                                     zoom_range = 0.1,
-                                    #    horizontal_flip=True,
-                                    #    vertical_flip=True,
                                     fill_mode='nearest') 
     filename_in_dir = [] 
     target_path = ORIGINAL_PATH + p
@@ -127,20 +114,17 @@ for p in os.listdir(ORIGINAL_PATH):
     
         for batch in data_datagen.flow(x,save_to_dir='./data/'+p, save_prefix='changed', save_format='png'):
             i += 1
-            if i > 300:
-            # if i > 100: 이 부분으로 증가시킬 양을 결정할 수 있다.
+            if i > 300: # if i > 100: 이 부분으로 증가시킬 양을 결정할 수 있다.
                 break
 ```
 
 
 ```python
-# img_list
+# img의 상태 파악
 img = cv2.imread('./data/forward/changed_0_0.png', cv2.IMREAD_UNCHANGED)
-# File Size : 579Kb
-print("Image Size : ",img.size) # (475 x 600 x 3) ==> 855Kb
-print("Image Shape : ",img.shape) # (height, width, channel)
-print("Image Data Type : ", img.dtype) # unsigned integer 8 bit
-# cv2.imwrite("00001.jpg", img) # file size : 173 Kb jpg로 바꾸면 크기 바뀐다던데 전혀 안바뀌더라구요..^^..
+print("Image Size : ",img.size)
+print("Image Shape : ",img.shape)
+print("Image Data Type : ", img.dtype)
 ```
 
 
@@ -156,6 +140,7 @@ print(data_path)
 
 
 ```python
+# 데이터 분리, move or copy 사용
 FORWARD_PATH = './data/forward'
 FAST_FORWARD_PATH= './data/fast_forward'
 BACKWARD_PATH = './data/backward'
@@ -193,10 +178,10 @@ def copy_to_train(img_list, train_path, test_path, label):
             pa = BACKWARD_PATH + '/'
             th = '/backward/'
 
-        # count가 train_len(12)보다 작으면 train 폴더에 copy, 이상이면 test 폴더에 copy
+        # count가 train_len다 작으면 train 폴더에 copy, 이상이면 test 폴더에 copy
         if count < train_len:
             shutil.copy(pa + img_name, train_path + th) # 이미지 copy
-            # print(train_path + th + img_name) < 얘는 왜 안대지? 어이없네 ㅡㅡ
+            # train_path를 train_path + th + img_name로 바꿔도 동일하다
         else:
             shutil.copy(pa + img_name, test_path + th)
 
@@ -205,7 +190,7 @@ def copy_to_train(img_list, train_path, test_path, label):
 
 
 ```python
-# mask_list, nomask_list -> train과 test로 분리
+# category별로 -> train과 test로 분리
 copy_to_train(forward_list,"./train",'./test','forward')
 copy_to_train(fast_forward_list,"./train",'./test','fast')
 copy_to_train(backward_list,"./train",'./test','backward')
@@ -214,9 +199,8 @@ copy_to_train(backward_list,"./train",'./test','backward')
 
 ```python
 LEARNING_RATE = 0.0002
-N_EPOCHS = 50
-N_BATCHS = 200
-# N_BATCHS = 100
+N_EPOCHS = 30
+N_BATCHS = 200 # N_BATCHS = 100
 IMAGE_SIZE = 224
 N_CLASS = 3
 DROPOUT_RATE = 0.3
@@ -227,11 +211,8 @@ DROPOUT_RATE = 0.3
 # 학습데이터 및 모델 경로 설정
 train_dir = './train'
 validation_dir = './test'
-# test_dir = './data/test'
-# MODEL_PATH = './models/cat_dog_model'
 
-
-# 데이터 증강
+# generator 생성
 def get_generators():
     '''
     train, validation, test generator를 생성해서 반환.
@@ -242,7 +223,6 @@ def get_generators():
     test_datagen = ImageDataGenerator(rescale=1/255)
 
     # generator 들 생성
-    # 첫번째는 먼저 한동작이므로 동작과 비동작으로 바이너리 구분만
     train_generator = train_datagen.flow_from_directory(train_dir,
                                                         target_size=(224,224),
                                                         batch_size=N_BATCHS,
@@ -251,15 +231,12 @@ def get_generators():
                                                         target_size=(224,224),
                                                         batch_size=N_BATCHS,
                                                         class_mode='categorical')
-    # test_generator = test_datagen.flow_from_directory(test_dir,
-    #                                                     target_size=(224,224),
-    #                                                     batch_size=N_BATCHS,
-    #                                                     class_mode='categorical')
-    return train_generator, val_generator # test_generator
+    return train_generator, val_generator
 ```
 
 
 ```python
+# MobileNetV2 기반으로 실행
 conv_base = MobileNetV2(weights="imagenet",
                         include_top=False,
                         input_tensor=Input(shape=(224,224,3))
@@ -327,7 +304,11 @@ plt.title("Training Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
 plt.legend(loc="lower left")
-# plt.savefig(args["plot"])
+```
+
+
+```python
+model.save("my_model.h5")
 ```
 
 
@@ -335,9 +316,9 @@ plt.legend(loc="lower left")
 # 모델 predict
 import imutils # opencv의 부족한 점을 채워준다 머시기..
 from google.colab.patches import cv2_imshow # colab에서 쓸 수 있는 imshow
-img_path = './final/roll2.png'
-# img_path = './final/forward4.png'
-# img_path = './final/backward3.png'
+# img_path = './final/roll2.png'
+img_path = './final/forward4.png'
+# img_path = './final/backward1.png'
 img = load_img(img_path, target_size=(224,224)) # target_size를 지정 : 읽어올 때 resize처리한다.
 
 # ndarray 변환
@@ -356,20 +337,12 @@ print(pred)
 # 추론
 # 0 : backward 1 : fast_forward 2 : forward
 pred_class = np.argmax(pred, axis=-1)
-print(pred_class) #, label[pred_class[0]])
+print(pred_class)
 ```
 
 
 ```python
-import imutils # opencv의 부족한 점을 채워준다 머시기..
-from google.colab.patches import cv2_imshow # colab에서 쓸 수 있는 imshow
-image = './final/forward.png'
-image = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
+image = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 cv2_imshow(image)
 cv2.waitKey(0)
-```
-
-
-```python
-
 ```

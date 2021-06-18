@@ -2,10 +2,18 @@ import numpy as np
 import cv2
 import HandTrackingModule as htm
 import os
+import datetime
+import pandas as pd
+from AutopyClass import window_controller
+from tensorflow import keras
+from tensorflow.keras.preprocessing.image import img_to_array
 ####################################################################
 # webcam 화면 사이즈 조정 파라미터
 wCam, hCam = 1280, 720
 ####################################################################
+
+# 모델 호출
+gesture_model = keras.models.load_model('./model/my_model.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -14,11 +22,16 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 
 # model input값 초기화 이하 Canvas
-Canvas = np.zeros((720, 1280, 3), np.uint8)
+Canvas = np.zeros((hCam, wCam, 3), np.uint8)
 input_arr = [] # frame 저장 변수
+line_color = (255, 255, 255)
+line_thickness = 10
+finger_num = 8
 
+csv_path = './csv'
 img_path = './img'
-file_name_cnt = 0 # img파일 이름 중복 방지
+
+csv_list = []
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
@@ -32,27 +45,47 @@ while True:
 
     # 손 인식 되면 input_arr에 넣기
     else:
-        if len(input_arr) < 40:
-            input_arr.append(landmark_list[8][1:])
-        # input_arr 길이가 40이면  Canvas에 그리기
-        if len(input_arr) == 40:
+        if len(input_arr) < 30:
+            input_arr.append(landmark_list[finger_num][1:])
+        # input_arr 길이가 30이면  Canvas에 그리기
+        if len(input_arr) >= 30:
+            # csv_list.append(input_arr)
             prev_x, prev_y = input_arr[0]
-            trans_color = 5 # 색 변화를 위해
-            for i in range(1, 40):
+            for i in range(1, 30):
                 curr_x, curr_y = input_arr[i]
-                cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), 15)
+                cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                 prev_x, prev_y = curr_x, curr_y
-                trans_color += 5
 
             # output값을 보기 위한 png파일 변환
-            cv2.imwrite(os.path.join(img_path, f'img{file_name_cnt}.png'), Canvas)
-            file_name_cnt += 1
-            Canvas = np.zeros((720, 1280, 3), np.uint8) # Canvas 초기화
+            # t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+            # df = pd.DataFrame(input_arr)
+            # df.to_csv(os.path.join(csv_path, f'{t}.csv'), index=False, header=False)
+            # cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
+            
+            # 모델 input 전처리
+            Canvas = cv2.resize(Canvas, (224, 224))
+            Canvas = img_to_array(Canvas)
+            Canvas = Canvas[np.newaxis, ...]
+            Canvas = Canvas/255.
+            pred = gesture_model.predict(Canvas)
+            print('#######################')
+            print(pred)
+            idx = np.argmax(pred[0])
+            print(idx)
+            print('#######################')
+            window_controller(idx)
+            Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
             # 먼저 들어온 데이터 빼기(수정 필요)
-            for _ in range(2):
-                input_arr.pop(0)
+            input_arr = input_arr[3:]
 
     cv2.imshow('img', img)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) == ord('q'):
+        # csv_list = np.array(csv_list)
+        # csv_list = pd.DataFrame(csv_list)
+        # csv_list.to_csv('next.csv', index=False, header=False)
+        break
+cap.release()
+cv2.destroyAllWindows()
+
 
