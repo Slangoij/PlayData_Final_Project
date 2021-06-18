@@ -4,11 +4,16 @@ import HandTrackingModule as htm
 import os
 import datetime
 import pandas as pd
-
+from AutopyClass import window_controller
+from tensorflow import keras
+from tensorflow.keras.preprocessing.image import img_to_array
 ####################################################################
 # webcam 화면 사이즈 조정 파라미터
 wCam, hCam = 1280, 720
 ####################################################################
+
+# 모델 호출
+gesture_model = keras.models.load_model('./model/my_model.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -52,10 +57,23 @@ while True:
                 prev_x, prev_y = curr_x, curr_y
 
             # output값을 보기 위한 png파일 변환
-            t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-            df = pd.DataFrame(input_arr)
+            # t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+            # df = pd.DataFrame(input_arr)
             # df.to_csv(os.path.join(csv_path, f'{t}.csv'), index=False, header=False)
-            cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
+            # cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
+            
+            # 모델 input 전처리
+            Canvas = cv2.resize(Canvas, (224, 224))
+            Canvas = img_to_array(Canvas)
+            Canvas = Canvas[np.newaxis, ...]
+            Canvas = Canvas/255.
+            [[0.3, 0.2, 0.5]]
+            pred = gesture_model.predict(Canvas)
+            print('#######################')
+            print(pred)
+            print(max(pred[0]))
+            print('#######################')
+            window_controller(max(pred[0]))
             Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
             # 먼저 들어온 데이터 빼기(수정 필요)
