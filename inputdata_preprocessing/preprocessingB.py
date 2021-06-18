@@ -20,7 +20,8 @@ cap.set(4, hCam)
 Canvas = np.zeros((hCam, wCam, 3), np.uint8)
 input_arr = []  # frame 저장 변수
 line_thickness = 3
-finger_num = 9
+line_color = (255, 255, 255)
+finger_num = 8
 
 ########
 prev_time = 0
@@ -45,12 +46,9 @@ while True:
         if len(landmark_list) == 0:
             if input_arr:
                 prev_x, prev_y = input_arr[0]
-                trans_color = 5  # 색 변화를 위해
                 for i in range(len(input_arr)):
-                    if i > 5:
-                        trans_color = 255
                     curr_x, curr_y = input_arr[i]
-                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
+                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                     prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
@@ -68,10 +66,8 @@ while True:
                 prev_x, prev_y = input_arr[0]
                 trans_color = 5  # 색 변화를 위해
                 for i in range(1, 30):
-                    if i > 5:
-                        trans_color = 255
                     curr_x, curr_y = input_arr[i]
-                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), (255, 0, trans_color), line_thickness)
+                    cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                     prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
