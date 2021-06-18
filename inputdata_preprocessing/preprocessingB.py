@@ -54,7 +54,7 @@ while True:
                     prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
-                t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
+                t = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
                 cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
                 Canvas = np.zeros((hCam, wCam, 3), np.uint8)  # Canvas 초기화
                 input_arr.clear()
@@ -75,11 +75,13 @@ while True:
                     prev_x, prev_y = curr_x, curr_y
 
                 # output값을 보기 위한 png파일 변환
-                t = datetime.datetime.now().strftime("%Y-%M-%d %H-%M-%S")
+                t = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
                 cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
                 Canvas = np.zeros((hCam, wCam, 3), np.uint8)  # Canvas 초기화
 
                 # 먼저 들어온 데이터 빼기
                 input_arr = input_arr[10:]
+
     cv2.imshow('img', img)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) == ord('q'):
+        break
