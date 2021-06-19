@@ -13,7 +13,7 @@ wCam, hCam = 1280, 720
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/my_model.h5')
+gesture_model = keras.models.load_model('./model/vgg16_model_2.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
