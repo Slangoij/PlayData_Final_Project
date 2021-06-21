@@ -27,11 +27,7 @@ prev_time = 0
 FPS = 30
 ########
 
-<<<<<<< HEAD
 img_path = '/img'
-=======
-img_path = 'img'
->>>>>>> develop
 csv_path = 'csv'
 
 while True:
@@ -53,15 +49,6 @@ while True:
             # 손을 다 폈을 때와 검지만 폈을 때 구분
             if fingers[1] and fingers[4]:
                 two_fingers = landmark_list[8][1:] + landmark_list[20][1:]
-<<<<<<< HEAD
-                input_arr.append(two_fingers)
-                print(input_arr[0])
-            elif fingers[1]:
-                input_arr.append(landmark_list[8][1:])
-            # input_arr 길이가 frame_이면  Canvas에 그리기
-            if len(input_arr) == frame_limit:
-                Canvas = draw.draw_canvas(Canvas, frame_limit, input_arr)
-=======
                 csv_arr.append(two_fingers)
                 draw_arr.append(two_fingers)
             elif fingers[1]:
@@ -70,7 +57,6 @@ while True:
             # csv_arr 길이가 frame_이면  Canvas에 그리기
             if len(draw_arr) == frame_limit:
                 Canvas = draw.draw_canvas(Canvas, frame_limit, draw_arr)
->>>>>>> develop
                 # output값을 보기 위한 png파일 변환
                 t = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
                 df = pd.DataFrame(csv_arr)
