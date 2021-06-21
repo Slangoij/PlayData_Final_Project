@@ -27,7 +27,7 @@ prev_time = 0
 FPS = 30
 ########
 
-img_path = '/img'
+img_path = 'img'
 csv_path = 'csv'
 
 while True:
