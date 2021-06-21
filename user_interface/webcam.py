@@ -17,7 +17,7 @@ class DryHand(QWidget):
 
         _, self.img_o = self.cpt.read()
         self.img_o = cv2.cvtColor(self.img_o, cv2.COLOR_RGB2GRAY)
-        cv2.imwrite('img_o.jpg', self.img_o)
+        # cv2.imwrite('img_o.jpg', self.img_o)
 
         self.cnt = 0
 
@@ -77,7 +77,7 @@ class DryHand(QWidget):
         cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
         # cam = cv2.flip(cam, 0)
         self.img_p = cv2.cvtColor(cam, cv2.COLOR_RGB2GRAY)
-        cv2.imwrite('img_p.jpg', self.img_p)
+        # cv2.imwrite('img_p.jpg', self.img_p)
         self.compare(self.img_o, self.img_o)
         self.img_o = self.img_p.copy()
         img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
