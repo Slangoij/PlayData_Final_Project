@@ -51,7 +51,7 @@ while True:
                 input_arr.append(two_fingers)
                 print(input_arr[0])
             elif fingers[1]:
-                input_arr.append(landmark_list[8][1:] + [0, 0])
+                input_arr.append(landmark_list[8][1:])
             # input_arr 길이가 frame_이면  Canvas에 그리기
             if len(input_arr) == frame_limit:
                 Canvas = draw.draw_canvas(Canvas, frame_limit, input_arr)
