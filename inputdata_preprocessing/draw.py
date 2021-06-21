@@ -1,7 +1,7 @@
 import cv2
 
 def draw_canvas(img, cnt, draw_arr):
-
+    
     if len(draw_arr[0]) == 2:
         prev_locations = tuple(draw_arr[0][:2])
         for i in range(1, cnt):

@@ -72,7 +72,7 @@ while True:
             csv_arr.clear()
             draw_arr.clear()
 
-
+    
     cv2.imshow('img', img)
     if cv2.waitKey(1) == ord('q'):
         break
