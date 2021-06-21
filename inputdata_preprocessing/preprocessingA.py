@@ -26,8 +26,8 @@ prev_time = 0
 FPS = 30
 ########
 
-img_path = './img'
-csv_path = './csv'
+img_path = '/img'
+csv_path = 'csv'
 
 while True:
     success, img = cap.read()
@@ -49,6 +49,7 @@ while True:
             if fingers[1] and fingers[4]:
                 two_fingers = landmark_list[8][1:] + landmark_list[20][1:]
                 input_arr.append(two_fingers)
+                print(input_arr[0])
             elif fingers[1]:
                 input_arr.append(landmark_list[8][1:] + [0, 0])
             # input_arr 길이가 frame_이면  Canvas에 그리기
