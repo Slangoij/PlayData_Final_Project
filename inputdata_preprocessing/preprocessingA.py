@@ -19,15 +19,16 @@ cap.set(4, hCam)
 
 # model input값 초기화 이하 Canvas
 Canvas = np.zeros((hCam, wCam, 3), np.uint8)
-input_arr = []  # frame 저장 변수
+csv_arr = []  # frame 저장 변수
+draw_arr = []
 frame_limit = 20
 ########
 prev_time = 0
 FPS = 30
 ########
 
-img_path = './img'
-csv_path = './csv'
+img_path = 'img'
+csv_path = 'csv'
 
 while True:
     success, img = cap.read()
@@ -43,30 +44,33 @@ while True:
     if (success is True) and (curr_time > 1. / FPS):
         prev_time = time.time()
 
-        # 손 인식 되면 input_arr에 넣기
+        # 손 인식 되면 csv_arr에 넣기
         if len(landmark_list):
             # 손을 다 폈을 때와 검지만 폈을 때 구분
             if fingers[1] and fingers[4]:
                 two_fingers = landmark_list[8][1:] + landmark_list[20][1:]
-                input_arr.append(two_fingers)
+                csv_arr.append(two_fingers)
+                draw_arr.append(two_fingers)
             elif fingers[1]:
-                input_arr.append(landmark_list[8][1:] + [0, 0])
-            # input_arr 길이가 frame_이면  Canvas에 그리기
-            if len(input_arr) == frame_limit:
-                Canvas = draw.draw_canvas(Canvas, frame_limit, input_arr)
+                csv_arr.append(landmark_list[8][1:] + [0, 0])
+                draw_arr.append(landmark_list[8][1:])
+            # csv_arr 길이가 frame_이면  Canvas에 그리기
+            if len(draw_arr) == frame_limit:
+                Canvas = draw.draw_canvas(Canvas, frame_limit, draw_arr)
                 # output값을 보기 위한 png파일 변환
                 t = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-                
-                df = pd.DataFrame(input_arr)
+                df = pd.DataFrame(csv_arr)
                 df.to_csv(os.path.join(csv_path, f'{t}.csv'), index=False, header=False)
 
                 cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
                 Canvas = np.zeros((hCam, wCam, 3), np.uint8)  # Canvas 초기화
                 # 먼저 들어온 데이터 빼기
-                input_arr = input_arr[10:]
-        # 손 인식이 안되면 Canvas 그리기
+                csv_arr = csv_arr[10:]
+                draw_arr = draw_arr[10:]
+        # 손 인식이 안되면 clear
         else:
-            input_arr.clear()
+            csv_arr.clear()
+            draw_arr.clear()
 
 
     cv2.imshow('img', img)
