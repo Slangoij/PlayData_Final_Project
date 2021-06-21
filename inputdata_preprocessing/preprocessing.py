@@ -56,6 +56,7 @@ while True:
                 cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                 prev_x, prev_y = curr_x, curr_y
 
+            print(prev_x, prev_y)
             # output값을 보기 위한 png파일 변환
             # t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
             # df = pd.DataFrame(input_arr)
