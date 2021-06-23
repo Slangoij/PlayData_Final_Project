@@ -14,7 +14,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 wCam, hCam = 640, 360
 ####################################################################
 # 모델 호출
-gesture_model = keras.models.load_model('./model/LSTM_model_test.h5')
+gesture_model = keras.models.load_model('./model/LSTM_model3-5.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
