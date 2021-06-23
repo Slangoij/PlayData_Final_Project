@@ -9,7 +9,7 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing.image import img_to_array
 ####################################################################
 # webcam 화면 사이즈 조정 파라미터
-wCam, hCam = 1280, 720
+wCam, hCam = 640, 360
 ####################################################################
 
 # 모델 호출
@@ -57,7 +57,7 @@ while True:
                 prev_x, prev_y = curr_x, curr_y
 
             # 모델 input 전처리
-            Canvas = cv2.resize(Canvas, (640, 360))
+            Canvas = cv2.resize(Canvas, (224, 224))
             Canvas = img_to_array(Canvas)
             Canvas = Canvas[np.newaxis, ...]
             Canvas = Canvas/255.
