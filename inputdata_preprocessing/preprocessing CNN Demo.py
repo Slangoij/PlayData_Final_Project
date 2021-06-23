@@ -13,7 +13,7 @@ wCam, hCam = 1280, 720
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/vgg16_model_2.h5')
+gesture_model = keras.models.load_model('./model/LSTM_model.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -56,24 +56,13 @@ while True:
                 cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                 prev_x, prev_y = curr_x, curr_y
 
-            print(prev_x, prev_y)
-            # output값을 보기 위한 png파일 변환
-            # t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-            # df = pd.DataFrame(input_arr)
-            # df.to_csv(os.path.join(csv_path, f'{t}.csv'), index=False, header=False)
-            # cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-            
             # 모델 input 전처리
             Canvas = cv2.resize(Canvas, (224, 224))
             Canvas = img_to_array(Canvas)
             Canvas = Canvas[np.newaxis, ...]
             Canvas = Canvas/255.
             pred = gesture_model.predict(Canvas)
-            print('#######################')
-            print(pred)
             idx = np.argmax(pred[0])
-            print(idx)
-            print('#######################')
             window_controller(idx)
             Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
