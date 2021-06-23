@@ -7,14 +7,14 @@ import pandas as pd
 from AutopyClass import window_controller
 from tensorflow import keras
 from tensorflow.keras.preprocessing.image import img_to_array
-####################################################################
+#############################################################a#######
 # webcam 화면 사이즈 조정 파라미터
-wCam, hCam = 1280, 720
+wCam, hCam = 640, 360
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/vgg16_model_2.h5')
-
+# gesture_model = keras.models.load_model('model/vgg16_model_2.h5')
+gesture_model = keras.models.load_model('inputdata_preprocessing\model\MobileNetV2.h5')
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
 cap = cv2.VideoCapture(0)
@@ -64,7 +64,7 @@ while True:
             # cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
             
             # 모델 input 전처리
-            Canvas = cv2.resize(Canvas, (224, 224))
+            # Canvas = cv2.resize(Canvas, (224, 224))
             Canvas = img_to_array(Canvas)
             Canvas = Canvas[np.newaxis, ...]
             Canvas = Canvas/255.
