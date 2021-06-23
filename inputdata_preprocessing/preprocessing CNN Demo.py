@@ -68,7 +68,7 @@ while True:
             
             # 먼저 들어온 데이터 빼기(수정 필요)
             input_arr = input_arr[3:]
-
+    
     cv2.imshow('img', img)
     if cv2.waitKey(1) == ord('q'):
         # csv_list = np.array(csv_list)
