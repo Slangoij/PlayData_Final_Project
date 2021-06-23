@@ -69,8 +69,8 @@ while True:
                 draw_arr = draw_arr[10:]
         # 손 인식이 안되면 clear
         else:
-            csv_arr.clear()
-            draw_arr.clear()
+                csv_arr.clear()
+                draw_arr.clear()
 
     
     cv2.imshow('img', img)
