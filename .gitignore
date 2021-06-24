@@ -1,5 +1,3 @@
-.vscode/settings.json
-.vscode/
-.idea/
-.vscode/settings.json
-inputdata_preprocessing/__pycache__
+.vscode
+.inputdata_preprocessing\.vscode
+.inputdata_preprocessing\__pycache__

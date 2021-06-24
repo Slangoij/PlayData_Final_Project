@@ -14,8 +14,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 wCam, hCam = 640, 360
 ####################################################################
 # 모델 호출
-# gesture_model = keras.models.load_model('./model/LSTM_model_test.h5')
-gesture_model = keras.models.load_model('model/test_models/LSTM_model3-5.h5')
+gesture_model = keras.models.load_model('./model/LSTM_model3-5.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -71,9 +70,8 @@ while True:
                 draw_arr.clear()
                 # 모델 인풋에 맞춰 전처리
                 input_data = input_data[np.newaxis, ...]
-                print(input_data)
                 pred = gesture_model.predict(input_data)
-                print(pred, pred.shape, pred[0,0],pred[0,1],pred[0,2],pred[0,3])
+                print(pred)
                 idx = np.argmax(pred[0])
                 window_controller(idx)
                 input_arr.clear()
