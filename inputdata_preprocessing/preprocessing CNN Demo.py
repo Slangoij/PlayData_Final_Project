@@ -9,13 +9,15 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing.image import img_to_array
 ####################################################################
 # webcam 화면 사이즈 조정 파라미터
-wCam, hCam = 1280, 720
+wCam, hCam = 640, 360
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/LSTM_model.h5')
+# gesture_model = keras.models.load_model('model/test_models/MobileNetV2-2021-06-23_1_2.h5')
+gesture_model = keras.models.load_model('model/test_models/MobileNet1-6.h5')
+# gesture_model = keras.models.load_model('model/test_models/vgg16_model_id_2-3.h5')
 
-detector = htm.handDetector(maxHands=1, detectionCon=0.75)
+detector = htm.handDetector(maxHands=1, detectionCon=0.7)
 
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
@@ -45,13 +47,13 @@ while True:
 
     # 손 인식 되면 input_arr에 넣기
     else:
-        if len(input_arr) < 30:
+        if len(input_arr) < 25:
             input_arr.append(landmark_list[finger_num][1:])
         # input_arr 길이가 30이면  Canvas에 그리기
-        if len(input_arr) >= 30:
+        if len(input_arr) >= 25:
             # csv_list.append(input_arr)
             prev_x, prev_y = input_arr[0]
-            for i in range(1, 30):
+            for i in range(1, 25):
                 curr_x, curr_y = input_arr[i]
                 cv2.line(Canvas, (prev_x, prev_y), (curr_x, curr_y), line_color, line_thickness)
                 prev_x, prev_y = curr_x, curr_y
@@ -62,12 +64,18 @@ while True:
             Canvas = Canvas[np.newaxis, ...]
             Canvas = Canvas/255.
             pred = gesture_model.predict(Canvas)
-            idx = np.argmax(pred[0])
-            window_controller(idx)
+            # print(pred, pred.shape)
+
+            # print(pred[0],pred[1],pred[2],pred[3])
+            print("maxpred = ",max(pred[0]))
+            if max(pred[0])>0.9:
+                print("=================")
+                idx = np.argmax(pred[0])
+                window_controller(idx)
             Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
             # 먼저 들어온 데이터 빼기(수정 필요)
-            input_arr = input_arr[3:]
+            input_arr = input_arr[5:]
 
     cv2.imshow('img', img)
     if cv2.waitKey(1) == ord('q'):
