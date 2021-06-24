@@ -46,8 +46,10 @@ while True:
         out_check += 1
         if out_check == 10 and control_mode:
             control_mode = False
-            if not control_mode:
-                Canvas = draw.draw_canvas(Canvas, len(draw_arr)-20, draw_arr[10:-10])
+            if not control_mode and len(draw_arr) <= 100:
+                draw_arr = draw_arr[10:-10]
+                Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
+
                 draw.save_image_file(Canvas, img_path)
                 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
                 draw_arr.clear()
