@@ -11,7 +11,7 @@ import draw
 wCam, hCam = 640, 360
 ####################################################################
 
-detector = htm.handDetector(detectionCon=0.75, maxHands=1)
+detector = htm.handDetector(detectionCon=0.60, maxHands=1)
 
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
@@ -46,14 +46,16 @@ while True:
 
         # 손 인식 되면 csv_arr에 넣기
         if len(landmark_list):
-            # 손을 다 폈을 때와 검지만 폈을 때 구분
-            if fingers[1] and fingers[4]:
-                two_fingers = landmark_list[8][1:] + landmark_list[20][1:]
-                csv_arr.append(two_fingers)
-                draw_arr.append(two_fingers)
-            elif fingers[1]:
-                csv_arr.append(landmark_list[8][1:] + [0, 0])
-                draw_arr.append(landmark_list[8][1:])
+            csv_arr.append(landmark_list[8][1:])
+            draw_arr.append(landmark_list[8][1:])
+            # # 손을 다 폈을 때와 검지만 폈을 때 구분
+            # if fingers[1] and fingers[4]:
+            #     two_fingers = landmark_list[8][1:] + landmark_list[20][1:]
+            #     csv_arr.append(two_fingers)
+            #     draw_arr.append(two_fingers)
+            # elif fingers[1]:
+            #     csv_arr.append(landmark_list[8][1:] + [0, 0])
+            #     draw_arr.append(landmark_list[8][1:])
             # csv_arr 길이가 frame_이면  Canvas에 그리기
             if len(draw_arr) == frame_limit:
                 Canvas = draw.draw_canvas(Canvas, frame_limit, draw_arr)
@@ -69,8 +71,8 @@ while True:
                 draw_arr = draw_arr[10:]
         # 손 인식이 안되면 clear
         else:
-                csv_arr.clear()
-                draw_arr.clear()
+            csv_arr.clear()
+            draw_arr.clear()
 
     
     cv2.imshow('img', img)

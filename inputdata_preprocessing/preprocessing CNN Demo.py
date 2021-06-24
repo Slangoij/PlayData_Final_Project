@@ -13,7 +13,7 @@ wCam, hCam = 640, 360
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/LSTM_model.h5')
+gesture_model = keras.models.load_model('./model/MobileNetV2-2021-06-23_1_2.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -63,6 +63,7 @@ while True:
             Canvas = Canvas/255.
             pred = gesture_model.predict(Canvas)
             idx = np.argmax(pred[0])
+            print(pred[0])
             window_controller(idx)
             Canvas = np.zeros((hCam, wCam, 3), np.uint8) # Canvas 초기화
             
