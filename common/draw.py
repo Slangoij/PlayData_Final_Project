@@ -39,8 +39,9 @@ def save_file(Canvas, draw_arr, img_path, pred='temp', csv_path=None):
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장
     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-    
+    print(f'save {label} img')
     # csv 파일 저장
     if csv_path:
         df = pd.DataFrame(draw_arr)
         df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
+        print(f'save {label} csv')
