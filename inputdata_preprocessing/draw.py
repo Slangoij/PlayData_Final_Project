@@ -43,6 +43,6 @@ def draw_canvas(img, cnt, draw_arr):
 def save_file(Canvas, draw_arr, img_path, csv_path):
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-    print(draw_arr)
+
     df = pd.DataFrame(draw_arr)
     df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
