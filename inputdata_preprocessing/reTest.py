@@ -13,7 +13,7 @@ from tensorflow import keras
 cam_size = 640
 #####################################
 
-gesture_model = keras.models.load_model('model/MobileNetV2-2021-06-24_04-31-52.h5')
+gesture_model = keras.models.load_model('model/MobileNetV2Colab-2021-06-24_07-24-33.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -73,7 +73,6 @@ while True:
                     # draw.save_file(Canvas, draw_arr, img_path, csv_path)
                     Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
                 draw_arr.clear()
-
 
     cv2.imshow('img', img)
     cv2.waitKey(1)
