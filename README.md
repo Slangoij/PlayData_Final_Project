@@ -25,7 +25,7 @@
     ├── test                - test를 위한 directory
     ├── user_interface      - GUI user interface
     ├── AutopyClass.py      - window controller
-    └── model_preprocess.py - 모델 input 값 전처리, 추론 함수 정의
+    └── GestureModule.py    - 모델 input 값 전처리, 추론 함수 정의
 ```
 
 ## 4. 예상 결과물
