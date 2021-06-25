@@ -1,7 +1,7 @@
 # AutopyClass
 - 마우스, 키보드 제어 모듈
 
-# model_preprocess
+# GestureModule
 - `trans_input` 함수
     - 학습된 모델의 input을 맞추기 위한 함수
     - RNN과 CNN의 input data의 형태가 다르므로 구분

@@ -1,6 +1,5 @@
-from src.AutopyClass import window_controller
 from common import HandTrackingModule as htm
-from src import model_preprocess as mp
+from src import GestureModule
 from tensorflow import keras
 from common import draw
 import numpy as np
@@ -55,14 +54,13 @@ while True:
                     # 저장한 좌표로 input 데이터 생성
                     # 모델 추론
                     draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
-                    input_data, imgCanvas = mp.trans_input(draw_arr, wCam, hCam, CNN=True)
-                    pred, confidence = mp.predict(input_data)
+                    input_data, imgCanvas = GestureModule.trans_input(draw_arr, wCam, hCam, CNN=True)
+                    pred, confidence = GestureModule.predict(input_data)
                     # 예측률 75% 이상 input 데이터 저장
                     if confidence > 0.75:
                         draw.save_file(imgCanvas, draw_arr, pred, img_path)
                     Canvas = np.zeros((wCam, hCam, 3), np.uint8)
                 draw_arr.clear()
-
 
     cv2.imshow('img', img)
     cv2.waitKey(1)
