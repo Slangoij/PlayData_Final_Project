@@ -19,8 +19,9 @@ cap.set(4, cam_size)
 draw_arr = []
 in_check = 0
 out_check = 0
-control_mode = False
-Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
+control_mode = False # 좌표 입력 모드 초기화
+# 제스처 이동 궤적을 위한 Canvas 초기화
+Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) 
 
 img_path = 'img'
 csv_path = 'csv'
@@ -35,6 +36,7 @@ while True:
     if landmark_list:
         out_check = 0
         fingers = detector.fingersUp()
+        # 주먹을 쥐면 좌표 입력 모드 True
         if 1 not in fingers[1:]:
             in_check += 1
             if in_check == 10:
@@ -43,13 +45,15 @@ while True:
         if control_mode:
             draw_arr.append(landmark_list[8][1:])
             cv2.circle(img, tuple(landmark_list[8][1:]), 7, (255,0,0), cv2.FILLED)
+    # 손이 인식 안되면 입력 받은 좌표들로 데이터 생성
     else:
         out_check += 1
         if out_check == 10 and control_mode:
             control_mode = False
             if not control_mode:
+                # 최소 20, 최대 100 frame 까지 입력 받기
                 if 20 < len(draw_arr) <= 100:
-                    draw_arr = draw_arr[10:-10] 
+                    draw_arr = draw_arr[10:-10] # 앞뒤로 10 frame 씩 무시
                     Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
                     draw_arr += [[0,0]] * (80 - len(draw_arr))
 

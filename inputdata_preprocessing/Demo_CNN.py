@@ -12,7 +12,7 @@ from tensorflow import keras
 cam_size = 640
 #####################################
 
-gesture_model = keras.models.load_model('models/MobileNetV2-2021-06-24_14-16-35.h5')
+gesture_model = keras.models.load_model('../model/saved_model/MobileNetV2-2021-06-24_14-16-35.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
