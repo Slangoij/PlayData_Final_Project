@@ -4,12 +4,12 @@ import os
 import cv2
 
 def draw_canvas(img, cnt, draw_arr):
-    # 이미지 데이터 생성
+    '''
+    전달 받은 좌표 arr로 이미지 데이터 생성
+    '''
     prev_index = tuple(draw_arr[0])
     for i in range(1, cnt):
-        '''
-        이전 좌표와 현재 좌표 저장하여 cv2.line을 이용하여 선 연결
-        '''
+        # 이전, 현재 좌표 저장하여 선 연결
         curr_index = tuple(draw_arr[i])
         cv2.line(img, prev_index, curr_index, (255, 255, 255), 7)
         prev_index = curr_index
