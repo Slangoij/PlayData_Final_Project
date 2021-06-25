@@ -1,6 +1,7 @@
 # Model
 - VGG16
 - MobileNetV2
+- LSTM
 
 ## MobileNetV2 디렉토리 경로
 ```bash
