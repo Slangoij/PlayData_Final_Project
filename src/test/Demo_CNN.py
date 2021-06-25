@@ -1,18 +1,16 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
-from AutopyClass import window_controller
-from tensorflow.python.keras.backend import one_hot
-import HandTrackingModule as htm
+from tensorflow import keras
+from src.AutopyClass import window_controller
+from common import HandTrackingModule as htm
+from common import draw
 import numpy as np
 import pandas as pd
-import draw
 import cv2
-import os
-from tensorflow import keras
 #####################################
 cam_size = 640
 #####################################
 
-gesture_model = keras.models.load_model('../model/saved_model/MobileNetV2-2021-06-24_14-16-35.h5')
+gesture_model = keras.models.load_model(r'./././model/saved_model/MobileNetV2Colab-2021-06-24_07-24-33.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -26,8 +24,8 @@ out_check = 0
 control_mode = False
 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
 
-img_path = 'img'
-csv_path = 'csv'
+img_path = r'model/data/img/temp'
+csv_path = r'model/data/csv/temp'
 
 while True:
     success, img = cap.read()

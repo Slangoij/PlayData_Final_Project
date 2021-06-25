@@ -1,20 +1,16 @@
+from src.AutopyClass import window_controller
+from tensorflow import keras
+from common import HandTrackingModule as htm
+from common import draw
+import pandas as pd
 import numpy as np
 import cv2
-import HandTrackingModule as htm
-import pandas as pd
-import time
-import datetime
-import draw
-import os
-from AutopyClass import window_controller
-from tensorflow import keras
-from tensorflow.keras.preprocessing.image import img_to_array
 ####################################################################
 # webcam 화면 사이즈 조정 파라미터
 cam_size = 640
 ####################################################################
 # 모델 호출
-gesture_model = keras.models.load_model('../model/saved/LSTM_model3-10.h5')
+gesture_model = keras.models.load_model(r'./././model/saved_model/LSTM_model3-10.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
@@ -29,8 +25,8 @@ out_check = 0
 control_mode = False
 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
 
-img_path  = 'img'
-csv_path = 'csv'
+img_path = r'model/data/img/temp'
+csv_path = r'model/data/csv/temp'
 
 while True:
     success, img = cap.read()
