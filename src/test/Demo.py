@@ -1,6 +1,6 @@
 from src.AutopyClass import window_controller
 from common import HandTrackingModule as htm
-from common import model_preprocess as mp
+from src import model_preprocess as mp
 from tensorflow import keras
 from common import draw
 import numpy as np
@@ -56,20 +56,10 @@ while True:
                     # 모델 추론
                     draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
                     input_data, imgCanvas = mp.trans_input(draw_arr, wCam, hCam, CNN=True)
-                    pred = gesture_model.predict(input_data)
-
-                    idx = np.argmax(pred[0])
-                    maxRound = np.round(max(pred[0]),2)
-                    print(maxRound)
-
-                    if max(pred[0]>0.8):
-                        print(maxRound)
-                        window_controller(idx)
-                    else:
-                        print(max(pred[0]), np.argmax(pred[0]))
-
-                    # input 데이터 저장
-                    draw.save_file(imgCanvas, draw_arr, img_path)
+                    pred, confidence = mp.predict(input_data)
+                    # 예측률 75% 이상 input 데이터 저장
+                    if confidence > 0.75:
+                        draw.save_file(imgCanvas, draw_arr, pred, img_path)
                     Canvas = np.zeros((wCam, hCam, 3), np.uint8)
                 draw_arr.clear()
 
