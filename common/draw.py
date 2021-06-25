@@ -15,7 +15,7 @@ def draw_canvas(img, cnt, draw_arr):
         prev_index = curr_index
     return img
 
-def save_file(Canvas, draw_arr, pred, img_path, csv_path=None):
+def save_file(Canvas, draw_arr, img_path, pred=None, csv_path=None):
     '''
     모델이 예측한 라벨로 데이터 저장
         차후 학습 데이터로 사용
