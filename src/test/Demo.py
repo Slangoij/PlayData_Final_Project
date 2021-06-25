@@ -1,7 +1,7 @@
-from tensorflow.python.keras.preprocessing.image import img_to_array
-from tensorflow import keras
 from src.AutopyClass import window_controller
 from common import HandTrackingModule as htm
+from common import input_preprocess as ip
+from tensorflow import keras
 from common import draw
 import numpy as np
 import pandas as pd
@@ -22,7 +22,6 @@ draw_arr = []
 in_check = 0
 out_check = 0
 control_mode = False
-Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
 
 img_path = r'model/data/img/temp'
 csv_path = r'model/data/csv/temp'
@@ -52,25 +51,24 @@ while True:
             if not control_mode:
                 if 20 < len(draw_arr) <= 100:
                     draw_arr = draw_arr[10:-10] 
-                    Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
-                    draw_arr += [[0,0]] * (80 - len(draw_arr))
-                    imgCanvas = Canvas
+                    
+                    # RNN
+                    # input_arr, Canvas = ip.model_preprocessing(draw_arr, cam_size, cam_size, RNN=True)
+                    # pred = gesture_model.predict(input_arr)
 
-                    ################################################
-                    Canvas = cv2.resize(Canvas, (224, 224))
-                    Canvas = img_to_array(Canvas)
-                    Canvas = Canvas[np.newaxis, ...]
-                    Canvas = Canvas/255.
+                    # CNN
+                    Canvas, imgCanvas = ip.model_preprocessing(draw_arr, cam_size, cam_size, CNN=True)
                     pred = gesture_model.predict(Canvas)
                     idx = np.argmax(pred[0])
                     maxRound = np.round(max(pred[0]),2)
                     print(maxRound)
+
                     if max(pred[0]>0.8):
                         print(maxRound)
                         window_controller(idx)
                     else:
                         print(max(pred[0]), np.argmax(pred[0]))
-                    ################################################
+
                     draw.save_file(imgCanvas, draw_arr, img_path)
                     Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
                 draw_arr.clear()
