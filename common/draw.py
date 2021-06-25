@@ -13,9 +13,10 @@ def draw_canvas(img, cnt, draw_arr):
         prev_index = curr_index
     return img
 
-def save_file(Canvas, draw_arr, img_path, csv_path):
+def save_file(Canvas, draw_arr, img_path, csv_path=None):
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-
-    df = pd.DataFrame(draw_arr)
-    df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
+    
+    if csv_path:
+        df = pd.DataFrame(draw_arr)
+        df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)

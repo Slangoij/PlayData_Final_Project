@@ -71,7 +71,7 @@ while True:
                     else:
                         print(max(pred[0]), np.argmax(pred[0]))
                     ################################################
-                    draw.save_file(imgCanvas, draw_arr, img_path, csv_path)
+                    draw.save_file(imgCanvas, draw_arr, img_path)
                     Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
                 draw_arr.clear()
 
