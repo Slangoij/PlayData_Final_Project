@@ -1,11 +1,8 @@
-from tensorflow.python.keras.backend import one_hot
-import HandTrackingModule as htm
+from common import HandTrackingModule as htm
+from common import draw
 import numpy as np
 import pandas as pd
-import draw
-import datetime
 import cv2
-import os
 #####################################
 cam_size = 640
 #####################################
@@ -23,8 +20,8 @@ control_mode = False # 좌표 입력 모드 초기화
 # 제스처 이동 궤적을 위한 Canvas 초기화
 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) 
 
-img_path = 'img'
-csv_path = 'csv'
+img_path = r'model/data/img/temp'
+csv_path = r'model/data/csv/temp'
 
 while True:
     success, img = cap.read()
