@@ -1,3 +1,4 @@
-.vscode
-.inputdata_preprocessing\.vscode
-.inputdata_preprocessing\__pycache__
+.vscode/
+__pycache__/
+
+inputdata_preprocessing/.vscode/settings.json
