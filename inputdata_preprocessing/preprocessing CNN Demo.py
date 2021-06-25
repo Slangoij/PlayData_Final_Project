@@ -13,7 +13,7 @@ wCam, hCam = 640, 360
 ####################################################################
 
 # 모델 호출
-gesture_model = keras.models.load_model('./model/MobileNetV2-2021-06-23_1_2.h5')
+gesture_model = keras.models.load_model('./model/vgg16_model_4cls_ws_id_2-3.h5')
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
