@@ -48,7 +48,7 @@ while True:
         if out_check == 10 and control_mode:
             control_mode = False
             if not control_mode:
-                if len(draw_arr) <= 100:
+                if 20 < len(draw_arr) <= 100:
                     draw_arr = draw_arr[10:-10] 
                     Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
                     draw_arr += [[0,0]] * (80 - len(draw_arr))

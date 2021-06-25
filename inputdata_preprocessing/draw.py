@@ -3,6 +3,7 @@ import datetime
 import os
 import cv2
 
+
 # def draw_canvas(img, cnt, draw_arr):
 #     # 검지
 #     prev_index = tuple(draw_arr[0][:2])
@@ -39,10 +40,9 @@ def draw_canvas(img, cnt, draw_arr):
     return img
 
 
-
 def save_file(Canvas, draw_arr, img_path, csv_path):
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
-    print(draw_arr)
+    # print(draw_arr)
     df = pd.DataFrame(draw_arr)
     df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
