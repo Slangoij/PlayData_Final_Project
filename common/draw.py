@@ -26,14 +26,21 @@ def save_file(Canvas, draw_arr, pred, img_path, csv_path=None):
         label = '02previous'
     elif pred == 2:
         label = '03S'
-    else:
+    elif pred == 3:
         label = '04W'
+    else:
+        pass
+
+    if label:
+        img_path = os.path.join(img_path, label)
+        if csv_path:
+            csv_path = os.path.join(csv_path, label)
 
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장
-    cv2.imwrite(os.path.join(img_path, label, f'{t}.png'), Canvas)
+    cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
     
     # csv 파일 저장
     if csv_path:
         df = pd.DataFrame(draw_arr)
-        df.to_csv(os.path.join(csv_path, label ,f'{t}.csv'), header=False, index=False)
+        df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
