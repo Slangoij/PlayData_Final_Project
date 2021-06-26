@@ -9,20 +9,23 @@
 
 ## 3. 디렉토리 구조
 ```bash
-├── inputdata_preprocessing - 모델 학습 관련 데이터
-│   ├── image               - 학습용 이미지 데이터 원본 경로
-│   │   ├── img_class       - 클래스별 분류된 이미지 디렉토리    
-│   │   └── ...
-│   ├── model               - 학습 모델
-│   │   └── fast_forward
-│   └── preprocessing.py    - 이미지 전처리 모듈
-├── model                   - 사전 학습 모델
-│   ├── vgg_model           - vgg 모델
-│   ├── mobilenet_model     - mobilenet 모델
-│   └── ...
-└── user_interface          - GUI 모듈
-    ├── xxx.py
-    └── ...
+├── common                  - model, src에 공통으로 쓰이는 module
+│   ├── draw                - img 데이터 생성, 데이터 저장
+│   └── HandTrackingModule  - 손 인식 모듈
+│
+├── model
+│   ├── data
+│   │    ├── csv            - 비정제, 정제, temp (-> 추론 데이터)
+│   │    └── img            - 비정제, 정제, temp (-> 추론 데이터)
+│   ├── process             - 각 모델별(VGG, MobilNetV2, LSTM) 생성 파일
+│   ├── saved_model         - 학습된 모델 저장 directory
+│   └── preprocessing.py    - 학습 데이터 생성 file
+│
+├── src
+    ├── test                - test를 위한 directory
+    ├── user_interface      - GUI user interface
+    ├── AutopyClass.py      - window controller
+    └── GestureModule.py    - 모델 input 값 전처리, 추론 함수 정의
 ```
 
 ## 4. 예상 결과물
