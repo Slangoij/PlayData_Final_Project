@@ -5,8 +5,6 @@ from common import draw
 import numpy as np
 import cv2
 
-gesture_model = keras.models.load_model(r'./model/saved_model/MobileNetV2Colab-2021-06-24_07-24-33.h5')
-
 def trans_input(draw_arr, x_size, y_size, CNN=None, RNN=None):
         '''
         모델의 input값에 맞게 전처리
@@ -33,14 +31,16 @@ def trans_input(draw_arr, x_size, y_size, CNN=None, RNN=None):
             elif RNN:
                 draw_arr += [[0, 0]] * (80 - len(draw_arr))
                 input_arr = np.array(draw_arr)
+                input_arr[:][0] = input_arr[0] / x_size
+                input_arr[:][1] = input_arr[1] / y_size
+                print(input_arr[0], '<<<<<<<<<<<<<<<<')
                 ret = input_arr[np.newaxis, ...]
             return ret, origin_canvas
         except:
             # 모델을 선택하지 않는 경우 except
             print('모델을 선택하세요(CNN or RNN)')
 
-def predict(input_data):
-    global gesture_model
+def predict(gesture_model, input_data):
     '''
     학습된 모델로 예측
         예측한 값을 window_control module로 전달
