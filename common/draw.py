@@ -29,7 +29,7 @@ def save_file(Canvas, draw_arr, img_path, pred='temp', csv_path=None):
     elif pred == 3:
         label = '04W'
     else:
-        pass
+        label = None
 
     if label:
         img_path = os.path.join(img_path, label)
