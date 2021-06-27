@@ -9,7 +9,9 @@ import cv2
 hCam, wCam = 640, 640
 #####################################
 
-gesture_model = keras.models.load_model(r'./././model/saved_model/LSTM_model3-11.h5')
+model_name = 'vgg16_model_4cls_ws_id_2-3_noangle'
+
+gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(model_name))
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
 cap = cv2.VideoCapture(0)
@@ -54,11 +56,11 @@ while True:
                     # 저장한 좌표로 input 데이터 생성
                     # 모델 추론
                     draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
-                    input_data, imgCanvas = GestureModelModule.trans_input(draw_arr, wCam, hCam, RNN=True)
+                    input_data, imgCanvas = GestureModelModule.trans_input(draw_arr, wCam, hCam, CNN=True)
                     pred, confidence = GestureModelModule.predict(gesture_model, input_data)
                     # 예측률 75% 이상 input 데이터 저장
                     if confidence > 0.75:
-                        draw.save_file(imgCanvas, draw_arr, img_path, pred)
+                        draw.save_file(imgCanvas, draw_arr, img_path, csv_path=csv_path, pred=pred)
                     Canvas = np.zeros((wCam, hCam, 3), np.uint8)
                 draw_arr.clear()
 
