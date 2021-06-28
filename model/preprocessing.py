@@ -1,5 +1,5 @@
 from common import HandTrackingModule as htm
-from common import draw
+from common import draw as ds
 import numpy as np
 import pandas as pd
 import cv2
@@ -8,7 +8,7 @@ cam_size = 640
 #####################################
 
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-
+drawsave = ds.DrawSave()
 cap = cv2.VideoCapture(0)
 cap.set(3, cam_size)
 cap.set(4, cam_size)
@@ -51,10 +51,10 @@ while True:
                 # 최소 20, 최대 100 frame 까지 입력 받기
                 if 20 < len(draw_arr) <= 100:
                     draw_arr = draw_arr[10:-10] # 앞뒤로 10 frame 씩 무시
-                    Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
+                    Canvas = drawsave.draw_canvas(Canvas, len(draw_arr), draw_arr)
                     draw_arr += [[0,0]] * (80 - len(draw_arr))
 
-                    draw.save_file(Canvas, draw_arr, img_path, csv_path)
+                    drawsave.save_file(Canvas, draw_arr, img_path, csv_path)
                     Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
                 draw_arr.clear()
 

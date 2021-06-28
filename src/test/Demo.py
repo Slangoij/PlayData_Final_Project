@@ -1,7 +1,7 @@
 from common import HandTrackingModule as htm
 from src import GestureModelModule
 from tensorflow import keras
-from common import draw
+from common import draw as ds
 import numpy as np
 import cv2
 #####################################
@@ -11,7 +11,7 @@ hCam, wCam = 640, 640
 
 gesture_model = keras.models.load_model(r'./././model/saved_model/LSTM_model3-11.h5')
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-
+drawsave = ds.DrawSave()
 cap = cv2.VideoCapture(0)
 cap.set(3, wCam)
 cap.set(4, hCam)
@@ -58,7 +58,8 @@ while True:
                     pred, confidence = GestureModelModule.predict(gesture_model, input_data)
                     # 예측률 75% 이상 input 데이터 저장
                     if confidence > 0.75:
-                        draw.save_file(imgCanvas, draw_arr, img_path, pred)
+                        label = drawsave.labeling(pred)
+                        drawsave.save_file(imgCanvas, draw_arr, label)
                     Canvas = np.zeros((wCam, hCam, 3), np.uint8)
                 draw_arr.clear()
 
