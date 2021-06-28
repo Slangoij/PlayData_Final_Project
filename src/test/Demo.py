@@ -14,7 +14,8 @@ model_selection = 'CNN'
 conf_limit = 0.75
 #####################################
 
-# pre-train된 모델 로드
+model_name = 'vgg16_model_4cls_ws_id_2-3_noangle'
+
 gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(model_name))
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 

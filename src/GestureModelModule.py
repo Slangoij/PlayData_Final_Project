@@ -1,5 +1,4 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
-from tensorflow import keras
 from src.AutopyClass import window_controller
 from common import draw
 import numpy as np
@@ -10,7 +9,7 @@ def trans_input(draw_arr, x_size, y_size, model_selection):
         모델의 input값에 맞게 전처리
         input parameter 
             제스처 이동 좌표(draw_arr), 
-            이미지 사이즈(img height, width),
+            이미지 사이즈(width, height),
             모델 선택(CNN, RNN)
         return value
             ret == model input 값
