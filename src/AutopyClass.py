@@ -9,19 +9,8 @@ import cv2
 
 
 def window_controller(pred):
-    if pred == 0: # backward
-        # pyautogui.hotkey('alt', 'right')
-        print('next')
-        time.sleep(0.1)
-    elif pred == 1: # fast_forward
-        # pyautogui.hotkey('right')
-        print('previous')
-        time.sleep(0.1)
-    elif pred == 2: # forward
-        # pyautogui.hotkey('left')
-        print('S')
-        time.sleep(0.1)
-    elif pred == 3:
-        # pyautogui.hotkey('alt', 'left')
-        print('W')
-        time.sleep(0.1)
+    # 유튜브 모드
+    control_list = ['l', 'j', 'k', 'f']
+    # j : 10초 이전, l : 10초 이후, k : 일시정지 / 재생, f : 전체화면 / 원상복구
+    command = control_list[pred]
+    pyautogui.press(command)

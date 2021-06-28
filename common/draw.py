@@ -23,9 +23,9 @@ def draw_canvas(img, frame_cnt, draw_arr):
     return img
 
 def save_file(Canvas, draw_arr, pred=None):
-    img_path = r'model/data/img/temp'
-    csv_path = r'model/data/csv/temp'
-    data_path = r'./model/data/img/정제데이터'
+    img_path = './model/data/img/temp'
+    csv_path = './model/data/csv/temp'
+    data_path = './model/data/img/temp'
     '''
     if label:
         모델이 예측한 라벨로 데이터 저장
@@ -34,12 +34,10 @@ def save_file(Canvas, draw_arr, pred=None):
     input_data:
         Canvas: 손동작 궤적을 그린 이미지
         draw_arr: 검지의 좌표 list
-        img_path: 이미지를 저장할 경로
-        csv_path: csv파일 저장할 경로
         pred: 손동작 라벨
     '''
-    if pred:
-        labels = os.listdir(data_path)
+    labels = os.listdir(data_path)
+    if pred < len(labels):
         label = labels[pred]
         img_path = os.path.join(img_path, label)
         csv_path = os.path.join(csv_path, label)
@@ -50,3 +48,4 @@ def save_file(Canvas, draw_arr, pred=None):
     # csv 파일 저장
     df = pd.DataFrame(draw_arr)
     df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
+
