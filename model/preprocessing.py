@@ -10,26 +10,26 @@ cam_size = 640
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
 cap = cv2.VideoCapture(0)
+# webcam의 이미지 조정
 cap.set(3, cam_size)
 cap.set(4, cam_size)
 
 draw_arr = []
 in_check = 0
-out_check = 0
+out_check = 0 # 손이 인식이 안되어 draw_arr가 초기화 되는 것을 막기 위해
 control_mode = False # 좌표 입력 모드 초기화
 # 제스처 이동 궤적을 위한 Canvas 초기화
 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) 
-
-img_path = r'model/data/img/temp'
-csv_path = r'model/data/csv/temp'
 
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
 
+    # 이미지에서 손 detection
     img = detector.findHands(img)
     landmark_list, bbox = detector.findPosition(img, draw=False)
 
+    # 손이 인식된 경우
     if landmark_list:
         out_check = 0
         fingers = detector.fingersUp()
@@ -54,11 +54,15 @@ while True:
                     Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
                     draw_arr += [[0,0]] * (80 - len(draw_arr))
 
-                    draw.save_file(Canvas, draw_arr, img_path, csv_path)
-                    Canvas = np.zeros((cam_size, cam_size, 3), np.uint8)
+                    # 데이터 생성
+                    draw.save_file(Canvas, draw_arr)
+                    Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) # 캔버스 초기화
                 draw_arr.clear()
 
 
     cv2.imshow('img', img)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) == ord('q'):
+        break
 
+cap.release()
+cv2.destroyAllWindows()
