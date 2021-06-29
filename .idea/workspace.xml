@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="495f78e7-6306-432a-b081-e654ae5dd4c6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user_interface/webcam.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/user_interface/webcam.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +122,9 @@
       <module name="01_playdata_final_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/inputdata_preprocessing" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -184,6 +190,8 @@
       <workItem from="1624354279889" duration="1308000" />
       <workItem from="1624494712513" duration="8603000" />
       <workItem from="1624582871884" duration="4932000" />
+      <workItem from="1624956084982" duration="76000" />
+      <workItem from="1624962025779" duration="482000" />
     </task>
     <servers />
   </component>

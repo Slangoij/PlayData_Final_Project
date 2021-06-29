@@ -20,8 +20,8 @@ out_check = 0 # 손이 인식이 안되어 draw_arr가 초기화 되는 것을 �
 control_mode = False # 좌표 입력 모드 초기화
 # 제스처 이동 궤적을 위한 Canvas 초기화
 Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) 
-
-while True:
+i=0
+while i < 100:
     success, img = cap.read()
     img = cv2.flip(img, 1)
 
@@ -58,11 +58,14 @@ while True:
                     draw.save_file(Canvas, draw_arr)
                     Canvas = np.zeros((cam_size, cam_size, 3), np.uint8) # 캔버스 초기화
                 draw_arr.clear()
-
-
+    i+=1
+    if i == 20:
+        print("xxxxxxxxxx")
+        exit()
+        
     cv2.imshow('img', img)
     if cv2.waitKey(1) == ord('q'):
         break
-
+    print("x")
 cap.release()
 cv2.destroyAllWindows()
