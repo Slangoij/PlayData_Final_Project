@@ -148,9 +148,7 @@ class DryHand(QWidget):
                         input_data, imgCanvas = gmm.trans_input(self.draw_arr, self.wCam, self.hCam, self.model_selection)
                         pred, confidence = gmm.predict(self.gesture_model, input_data)
                         
-                        # 예측률 75% 이상 input 데이터 저장
                         if confidence > self.conf_limit:
-                            # AutopyClass.window_controller(pred)
                             self.act2.setText(AutopyClass.window_controller(pred))
                         Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
                     self.draw_arr.clear()

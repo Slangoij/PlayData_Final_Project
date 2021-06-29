@@ -25,7 +25,7 @@ def draw_canvas(img, frame_cnt, draw_arr):
 def save_file(Canvas, draw_arr, pred=None):
     img_path = './model/data/img/temp'
     csv_path = './model/data/csv/temp'
-    data_path = './model/data/img/temp'
+    data_path = './model/data/img/refined_data'
     '''
     if label:
         모델이 예측한 라벨로 데이터 저장
@@ -35,6 +35,8 @@ def save_file(Canvas, draw_arr, pred=None):
         Canvas: 손동작 궤적을 그린 이미지
         draw_arr: 검지의 좌표 list
         pred: 손동작 라벨
+    
+    refined_data에 최신 디렉토리 구성으로 저장하기 # 현재 [01next_img, 02previous_img, ...]
     '''
     labels = os.listdir(data_path)
     if pred < len(labels):
