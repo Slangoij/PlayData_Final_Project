@@ -41,6 +41,8 @@ def save_file(Canvas, draw_arr, pred=None):
         label = labels[pred]
         img_path = os.path.join(img_path, label)
         csv_path = os.path.join(csv_path, label)
+        os.makedirs(img_path, exist_ok=True)
+        os.makedirs(csv_path, exist_ok=True)
     
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장
