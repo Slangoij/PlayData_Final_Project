@@ -10,7 +10,7 @@ from tensorflow import keras
 from common import draw
 import numpy as np
 import cv2
-from src.test import Demo, Demo01
+from src.test import Demo
 
 # from src.test import Demo
 
