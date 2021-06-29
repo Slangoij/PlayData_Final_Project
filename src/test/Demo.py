@@ -1,5 +1,5 @@
 from common import HandTrackingModule as htm
-from src import gmm as gmm
+from src import GestureModelModule as gmm
 from src import AutopyClass
 from tensorflow import keras
 from common import draw
