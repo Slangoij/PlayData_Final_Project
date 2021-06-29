@@ -19,7 +19,7 @@ class DryHand(QWidget):
     
     def initUI(self):
         _, self.img_o = self.cpt.read()
-        # cv2.imwrite('img_o.jpg', self.img_o)
+        cv2.imwrite('img_o.jpg', self.img_o)
 
         self.frame.resize(640, 480)
         self.frame.setScaledContents(True)
@@ -73,9 +73,9 @@ class DryHand(QWidget):
     def nextFrameSlot(self):
         _, cam = self.cpt.read()
         cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
-        # cam = cv2.flip(cam, 0)
+        cam = cv2.flip(cam, 0)
         self.img_p = cv2.cvtColor(cam, cv2.COLOR_RGB2GRAY)
-        # cv2.imwrite('img_p.jpg', self.img_p)
+        cv2.imwrite('img_p.jpg', self.img_p)
         self.compare(self.img_o, self.img_o)
         self.img_o = self.img_p.copy()
         img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
