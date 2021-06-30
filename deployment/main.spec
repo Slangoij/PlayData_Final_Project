@@ -6,6 +6,11 @@ sys.setrecursionlimit(5000)
 
 block_cipher = None
 
+def get_mediapipe_path():
+    import mediapipe
+    mediapipe_path = mediapipe.__path__[0]
+    return mediapipe_path
+
 a = Analysis(['main.py'],
              pathex=['C:\\mypy'],
              binaries=[],
@@ -20,6 +25,10 @@ a = Analysis(['main.py'],
              noarchive=False)
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
+mediapipe_tree = Tree(get_mediapipe_path(), prefix='mediapipe', excludes=["*.pyc"])
+a.datas += mediapipe_tree
+a.binaries = filter(lambda x: 'mediapipe' not in x[0], a.binaries)
 
 exe = EXE(pyz,
           a.scripts,
