@@ -19,7 +19,6 @@ model_name = 'vgg16_model_4cls_ws_id_2-3_noangle'
 gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(model_name))
 detector = htm.handDetector(maxHands=1, detectionCon=0.75)
 
-
 cap = cv2.VideoCapture(0)
 # webcam size 조정
 cap.set(3, wCam)

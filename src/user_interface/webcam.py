@@ -11,45 +11,51 @@ from common import draw
 import numpy as np
 import cv2
 # from src.test import Demo
+from src.test import Demo_ij
 
 class DryHand(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('DryHand')
-        self.setGeometry(150,150,800,540)
+        self.setGeometry(150,150,900,540)
         self.initUI()
     
     def initUI(self):
+        self.timer = QTimer()
         self.cpt = cv2.VideoCapture(0)
         self.fps = 24
         self.sens = 300
-
-        _, self.img_o = self.cpt.read()
-        self.cnt = 0
+        self.win_width = 900
+        self.win_height = 540
+        self.frame_width = 640
+        self.frame_height = 480
+        self.btn_width = int((self.win_width-250)//2)
+        self.btn_height = self.win_height-self.frame_height-20
+        self.center_labels = 75
 
         self.frame = QLabel(self)
-        self.frame.resize(640, 480)
+        self.frame.resize(self.frame_width, self.frame_height)
         self.frame.setScaledContents(True)
         self.frame.move(5,5)
 
         self.btn_on = QPushButton("입력 실행", self)
-        self.btn_on.resize(100, 25)
-        self.btn_on.move(5, 490)
+        self.btn_on.resize(self.btn_width, self.btn_height)
+        self.btn_on.move(5, self.frame_height + 10)
         self.btn_on.clicked.connect(self.loadModel)
         self.btn_on.clicked.connect(self.start)
 
         self.btn_off = QPushButton("입력 중지", self)
-        self.btn_off.resize(100, 25)
-        self.btn_off.move(5 + 100 + 5, 490)
+        self.btn_off.resize(self.btn_width, self.btn_height)
+        self.btn_off.move(5 + self.btn_width + 5, self.frame_height + 10)
         self.btn_off.clicked.connect(self.stop)
 
         self.prt = QLabel(self)
-        self.prt.resize(200, 25)
-        self.prt.move(5 + 105 + 105, 490)
+        self.prt.resize(200, 490)
+        self.prt.move(5, self.frame_height + 10) # 5 +  (self.btn_width + 5)*2
 
         self.sldr = QSlider(Qt.Horizontal, self)
         self.sldr.resize(100, 25)
-        self.sldr.move(5 + 105 + 105 + 200, 490)
+        self.sldr.move(self.win_width-105-105, self.win_height-self.btn_height*2)
         self.sldr.setMinimum(1)
         self.sldr.setMaximum(30)
         self.sldr.setValue(24)
@@ -57,7 +63,7 @@ class DryHand(QWidget):
 
         self.sldr1 = QSlider(Qt.Horizontal, self)
         self.sldr1.resize(100, 25)
-        self.sldr1.move(5 + 105 + 105 + 200 + 105, 490)
+        self.sldr1.move(self.win_width-105, self.win_height-self.btn_height*2)
         self.sldr1.setMinimum(50)
         self.sldr1.setMaximum(500)
         self.sldr1.setValue(300)
@@ -66,19 +72,23 @@ class DryHand(QWidget):
         # 모드와 현재 동작 표기
         self.mode1 = QLabel("현재 모드", self)
         self.mode1.resize(150, 25)
-        self.mode1.move(650, 50)
+        self.mode1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 100)
         
         self.mode2 = QLabel(self)
         self.mode2.resize(150, 25)
-        self.mode2.move(650, 90)
+        self.mode2.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 140)
+        
+        self.mode3 = QLabel(self)
+        self.mode3.resize(150, 25)
+        self.mode3.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels + 100, 140)
         
         self.act1 = QLabel("현재 동작", self)
         self.act1.resize(150, 25)
-        self.act1.move(650, 150)
+        self.act1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 250)
         
         self.act2 = QLabel(self)
         self.act2.resize(150, 25)
-        self.act2.move(650, 190)
+        self.act2.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 300)
 
         self.show()
 
@@ -93,7 +103,6 @@ class DryHand(QWidget):
         self.prt.setText("감도 " + str(self.sens) + "로 조정")
     
     def start(self):
-        self.timer = QTimer()
         self.timer.timeout.connect(self.predict)
         self.timer.start(1000 / self.fps)
 
@@ -102,18 +111,7 @@ class DryHand(QWidget):
         self.timer.stop()
 
     def loadModel(self):
-        # 모델 추론시 변수 초기 셋팅
-        self.draw_arr = []
-        self.in_check = 0
-        self.out_check = 0
-        self.control_mode = False
-        self.model_selection = 'CNN'
-        self.conf_limit = 0.75
-        self.hCam, self.wCam = 640, 640
-
-        model_name = 'vgg16_model_4cls_ws_id_2-3_noangle'
-        self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-        self.gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(model_name))
+        self.dpDemo_ij.demopy()
 
     def predict(self):
         # 모델 추론 및 UI에 영상 출력
@@ -153,10 +151,12 @@ class DryHand(QWidget):
                         Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
                     self.draw_arr.clear()
 
-        if self.control_mode:
+        if Demo_ij.demopy:
             self.mode2.setText("입력모드")
+            self.mode3.setText("")
         else:
-            self.mode2.setText("입력모드X")
+            self.mode2.setText("")
+            self.mode3.setText("입력모드X")
         
         # GUI에 이미지 출력
         self.cam = cv2.cvtColor(self.cam, cv2.COLOR_BGR2RGB)
