@@ -1,5 +1,5 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
-from common import draw
+import draw
 import numpy as np
 import cv2
 
@@ -49,6 +49,4 @@ def predict(gesture_model, input_data):
     # 예측 라벨과 예측률 추출
     idx = np.argmax(pred[0])
     maxRound = np.round(max(pred[0]), 2)
-
-    print(maxRound, idx)
     return idx, maxRound

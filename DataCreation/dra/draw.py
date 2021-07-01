@@ -49,8 +49,8 @@ def draw_canvas(img, frame_cnt, draw_arr):
 #     df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
 
 def save_file(Canvas, draw_arr):
-    img_path = './model/data/img/'
-    csv_path = './model/data/csv/'  
+    img_path = './img/'
+    csv_path = './csv/'  
 
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장

@@ -6,7 +6,6 @@ from tensorflow import keras
 from common import draw
 import numpy as np
 import cv2
-from src.user_interface import webcam as wb
 # from src.user_interface.webcam import DryHand as dr
 from re import S
 from PyQt5.QtWidgets import *
@@ -23,8 +22,7 @@ class demopy():
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         # self.imdraw = dr.imgdraw()
-        self.imdraw = wb.DryHand()
-        self.gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(self.model_name))
+        # self.gesture_model = keras.models.load_model(r'./././model/saved_model/{0}.h5'.format(self.model_name))
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
         #####################################
 
@@ -76,17 +74,14 @@ class demopy():
                             # 모델 추론
                             draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
                             input_data, imgCanvas = gmm.trans_input(draw_arr, self.wCam, self.hCam, self.model_selection)
-                            pred, confidence = gmm.predict(self.gesture_model, input_data)
                             
                             # 예측률 75% 이상 input 데이터 저장
-                            if confidence > self.conf_limit:
-                                AutopyClass.window_controller(pred)
-                                draw.save_file(imgCanvas, draw_arr, pred)
+                            draw.save_file(imgCanvas, draw_arr)
                         draw_arr.clear()
 
-            # cv2.imshow('img', self.img)
+            cv2.imshow('img', self.img)
             cv2.waitKey(0)
-            cont = self.imdraw.imgdraw(self.img)
-            if not cont:
-                cap.release()
-                quit()
+
+
+p = demopy()
+p.demo()
