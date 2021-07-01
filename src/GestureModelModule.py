@@ -1,5 +1,4 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
-from src.AutopyClass import window_controller
 from common import draw
 import numpy as np
 import cv2

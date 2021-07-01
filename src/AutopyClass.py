@@ -1,8 +1,4 @@
-import sys
 import pyautogui
-import time
-import datetime
-import cv2
 
 control_list = []
 

@@ -1,8 +1,6 @@
 import mediapipe as mp2
 mp = mp2.solutions.mediapipe.python
 import cv2
-import time
-import math
 
 class handDetector():
     '''
