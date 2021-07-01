@@ -25,7 +25,7 @@ def draw_canvas(img, frame_cnt, draw_arr):
 def save_file(Canvas, draw_arr, pred=None):
     img_path = './model/data/img/temp'
     csv_path = './model/data/csv/temp'
-    data_path = './model/data/img/refined_data'
+    data_path = './model/data/img/8_label_data'
     '''
     if label:
         모델이 예측한 라벨로 데이터 저장
@@ -39,7 +39,7 @@ def save_file(Canvas, draw_arr, pred=None):
     refined_data에 최신 디렉토리 구성으로 저장하기 # 현재 [01next_img, 02previous_img, ...]
     '''
     labels = os.listdir(data_path)
-    if pred < len(labels):
+    if pred and pred < len(labels):
         label = labels[pred]
         img_path = os.path.join(img_path, label)
         csv_path = os.path.join(csv_path, label)
