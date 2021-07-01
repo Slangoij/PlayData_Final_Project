@@ -21,6 +21,7 @@ def draw_canvas(img, frame_cnt, draw_arr):
         prev_index = curr_index
     return img
 
+
 # def save_file(Canvas, draw_arr, pred=None):
 #     img_path = './model/data/img/temp'
 #     csv_path = './model/data/csv/temp'

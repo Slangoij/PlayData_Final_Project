@@ -49,8 +49,8 @@ while i < 100:
             control_mode = False
             if not control_mode:
                 # 최소 20, 최대 100 frame 까지 입력 받기
-                if 20 < len(draw_arr) <= 100:
-                    draw_arr = draw_arr[10:-10] # 앞뒤로 10 frame 씩 무시
+                if 30 < len(draw_arr) <= 100:
+                    draw_arr = draw_arr[10:-7] # 앞뒤로 10 frame 씩 무시
                     Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
                     draw_arr += [[0,0]] * (80 - len(draw_arr))
 

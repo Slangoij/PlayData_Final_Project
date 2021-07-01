@@ -114,6 +114,7 @@ class DryHand(QWidget):
 
     def stop(self):
         self.frame.setPixmap(QPixmap.fromImage(QImage()))
+
         self.cont = False
 
     def imgdraw(self, img):
