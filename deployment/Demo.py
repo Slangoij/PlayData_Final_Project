@@ -26,7 +26,7 @@ class demopy():
         img = self.detector.findHands(img)
         self.landmark_list, bbox = self.detector.findPosition(img, draw=False)
         action = ''
-
+        imgCanvas = None
         if self.landmark_list:
             self.out_check = 0
             self.fingers = self.detector.fingersUp()
@@ -56,4 +56,4 @@ class demopy():
                         Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
                     self.draw_arr.clear()
 
-        return self.control_mode, action
+        return self.control_mode, action, imgCanvas

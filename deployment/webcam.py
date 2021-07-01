@@ -18,7 +18,7 @@ class DryHand(QWidget):
         self.timer = QTimer()
         self.cpt = cv2.VideoCapture(0)
         self.dp = Demo.demopy()
-        self.fps = 60
+        self.fps = 24
         self.action_label = ''
         # 화면관련 설정
         self.bright = 10
@@ -37,6 +37,13 @@ class DryHand(QWidget):
         self.frame.resize(self.frame_width, self.frame_height)
         self.frame.setScaledContents(True)
         self.frame.move(5,5)
+
+        # 손동작이미지출력
+        self.frame1 = QLabel(self)
+        self.frame1.resize(200, 150)
+        self.frame1.setStyleSheet("color: #FF5733; border-style: solid; border-width: 1px; border-color: #05F1F5; border-radius: 10px; ")
+        self.frame1.setScaledContents(True)
+        self.frame1.move(self.frame_width + 30 , 60)
 
         self.btn_on = QPushButton("Play Cam", self)
         self.btn_on.resize(self.btn_width, self.btn_height)
@@ -62,9 +69,9 @@ class DryHand(QWidget):
         self.sldr = QSlider(Qt.Horizontal, self)
         self.sldr.resize(100, 25)
         self.sldr.move(self.win_width-105-105-30, self.win_height-self.btn_height*2)
-        self.sldr.setMinimum(10)
-        self.sldr.setMaximum(90)
-        self.sldr.setValue(60)
+        self.sldr.setMinimum(1)
+        self.sldr.setMaximum(30)
+        self.sldr.setValue(24)
         self.sldr.valueChanged.connect(self.setFps)
 
         self.sldr1 = QSlider(Qt.Horizontal, self)
@@ -82,31 +89,39 @@ class DryHand(QWidget):
         self.mode1.setStyleSheet("color: #000000;border-style: solid; border-width: 3px; border-color: #96FF8D; border-radius: 10px; ")
         self.mode1.setAlignment(Qt.AlignCenter)
         self.mode1.resize(150, 25)
-        self.mode1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 100)
+        self.mode1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 250)
         
         self.mode2 = QLabel(self)
         font4 = self.mode2.font()
         font4.setPointSize(20)
         self.mode2.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #96FF8D; border-radius: 10px; ")
         self.mode2.setAlignment(Qt.AlignCenter)
-        self.mode2.resize(90, 25)
-        self.mode2.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels - 20, 140)
+        self.mode2.resize(100, 25)
+        self.mode2.move(self.win_width-105-105-30, 280)
         
         self.mode3 = QLabel(self)
         font5 = self.mode3.font()
         font5.setPointSize(20)
         self.mode3.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #96FF8D; border-radius: 10px; ")
         self.mode3.setAlignment(Qt.AlignCenter)
-        self.mode3.resize(90, 25)
-        self.mode3.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels + 80, 140)
+        self.mode3.resize(100, 25)
+        self.mode3.move(self.win_width-105-10, 280)
         
+        self.act0 = QLabel("Last action Image", self)
+        font6 = self.act0.font()
+        font6.setPointSize(20)
+        self.act0.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #07DE6D; border-radius: 10px; ")
+        self.act0.setAlignment(Qt.AlignCenter)
+        self.act0.resize(150, 25)
+        self.act0.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 20)
+
         self.act1 = QLabel("Last action", self)
         font6 = self.act1.font()
         font6.setPointSize(20)
         self.act1.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #07DE6D; border-radius: 10px; ")
         self.act1.setAlignment(Qt.AlignCenter)
         self.act1.resize(150, 25)
-        self.act1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 300)
+        self.act1.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 340)
         
         self.act2 = QLabel(self)
         font7 = self.act2.font()
@@ -114,7 +129,21 @@ class DryHand(QWidget):
         self.act2.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #07DE6D; border-radius: 10px; ")
         self.act2.setAlignment(Qt.AlignCenter)
         self.act2.resize(150, 25)
-        self.act2.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 350)
+        self.act2.move(self.frame_width + (self.win_width-self.frame_width)//2 - self.center_labels, 370)
+
+        self.act3 = QLabel("프레임 조절", self)
+        font6.setPointSize(11)
+        self.act3.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #07DE6D; border-radius: 7px; ")
+        self.act3.setAlignment(Qt.AlignCenter)
+        self.act3.resize(100, 25)
+        self.act3.move(self.win_width-105-105-30, 430)
+
+        self.act4 = QLabel("명암 조절",self)
+        font6.setPointSize(11)
+        self.act4.setStyleSheet("color: #000000; border-style: solid; border-width: 3px; border-color: #07DE6D; border-radius: 7px; ")
+        self.act4.setAlignment(Qt.AlignCenter)
+        self.act4.resize(100, 25)
+        self.act4.move(self.win_width-105-10, 430)
 
         self.show()
 
@@ -150,7 +179,7 @@ class DryHand(QWidget):
         _, self.cam = self.cpt.read()
         self.cam = cv2.flip(self.cam, 1)
         self.cam = cv2.add(self.cam, (self.bright,self.bright,self.bright,0))
-        self.control_mode, tmp_action_label = self.dp.predict(self.cam)
+        self.control_mode, tmp_action_label, Canvas_img = self.dp.predict(self.cam)
 
         if self.control_mode:
             self.mode2.setText("Action Input")
@@ -168,4 +197,10 @@ class DryHand(QWidget):
         img = QImage(self.cam, self.cam.shape[1], self.cam.shape[0], QImage.Format_RGB888)
         pix = QPixmap.fromImage(img)
         self.frame.setPixmap(pix)
+
+        if Canvas_img is not None:
+            img_canvas = Canvas_img
+            img_canvas = QImage(img_canvas, img_canvas.shape[1], img_canvas.shape[0], QImage.Format_RGB888)
+            img_canvas = QPixmap.fromImage(img_canvas)
+            self.frame1.setPixmap(img_canvas)
 
