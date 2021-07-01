@@ -2,7 +2,6 @@ import pandas as pd
 import datetime
 import os
 import cv2
-import logging
 
 def draw_canvas(img, frame_cnt, draw_arr):
     '''
