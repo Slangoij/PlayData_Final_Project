@@ -1,10 +1,14 @@
 import HandTrackingModule as htm
 import GestureModelModule as gmm
-import AutopyClass
 from tensorflow import keras
 import numpy as np
 import cv2
+<<<<<<< Updated upstream
 # from src.user_interface.webcam import DryHand as dr
+=======
+import os
+from Autopy import AutopyClass
+>>>>>>> Stashed changes
     
 class demopy():
     def __init__(self):
@@ -14,14 +18,23 @@ class demopy():
         self.in_check = 0
         self.out_check = 0
         self.control_mode = False
+<<<<<<< Updated upstream
+=======
+        self.pyauto = AutopyClass()
+        # 모델 관련 변수
+>>>>>>> Stashed changes
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.hCam, self.wCam = 640, 640
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
+<<<<<<< Updated upstream
         self.gesture_model = keras.models.load_model('C:\\Users\\mein0\\01_testFinal\\deployment01\\model\\vgg16_model_4cls_ws_id_2-3_noangle.h5')
         ###########################################
+=======
+        self.gesture_model = keras.models.load_model(r'C:\Users\mein0\01_playdata_final_project\deployment\model\vgg16_model_8cls_2dropnorm_randomsd.h5')
+>>>>>>> Stashed changes
 
-    def predict(self, img):
+    def predict(self, img, modeChange):
         # 손 인식시
         img = self.detector.findHands(img)
         self.landmark_list, bbox = self.detector.findPosition(img, draw=False)
@@ -52,8 +65,13 @@ class demopy():
                         pred, confidence = gmm.predict(self.gesture_model, input_data)
                         
                         if confidence > self.conf_limit:
+<<<<<<< Updated upstream
                             action = AutopyClass.window_controller(pred)
                         Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
+=======
+                            modes = [self.pyauto.youtube, self.pyauto.webMode, self.pyauto.presentMode]
+                            action = modes[modeChange](pred)
+>>>>>>> Stashed changes
                     self.draw_arr.clear()
 
         return self.control_mode, action, imgCanvas
