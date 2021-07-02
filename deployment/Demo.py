@@ -33,12 +33,16 @@ class demopy():
         if self.landmark_list:
             self.out_check = 0
             self.fingers = self.detector.fingersUp()
-            if 1 not in self.fingers[1:]:
-                # 주먹 쥐면 검지의 좌표 저장
-                self.in_check += 1
-                if self.in_check == 10:
-                    self.in_check = 0
-                    self.control_mode = True        
+            if self.detector.palmDown():
+                self.control_mode = False
+                self.draw_arr.clear()
+            elif 1 not in self.fingers[1:]:
+                    # 주먹 쥐면 검지의 좌표 저장
+                    self.in_check += 1
+                    if self.in_check == 10:
+                        self.in_check = 0
+                        self.control_mode = True
+
             if self.control_mode:
                 self.draw_arr.append(self.landmark_list[8][1:])
                 cv2.circle(img, tuple(self.landmark_list[8][1:]), 7, (255,0,0), cv2.FILLED)

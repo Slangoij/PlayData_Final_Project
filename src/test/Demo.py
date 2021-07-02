@@ -41,7 +41,10 @@ while True:
     if landmark_list:
         out_check = 0
         fingers = detector.fingersUp()
-        if 1 not in fingers[1:]:
+        if detector.palmDown():
+            control_mode = False
+            draw_arr.clear()
+        elif 1 not in fingers[1:]:
             # 주먹 쥐면 검지의 좌표 저장
             in_check += 1
             if in_check == 10:
@@ -71,5 +74,6 @@ while True:
                 draw_arr.clear()
 
     cv2.imshow('img', img)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) == ord('q'):
+        break
 

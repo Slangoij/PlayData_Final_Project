@@ -21,7 +21,7 @@ class handDetector():
         # mediapipe의 hands class를 상속받아 손을 찾아주는 class
 
         self.mp_draw = mp.solutions.drawing_utils
-        self.tipIds = [4, 8, 12, 16, 20] # 각 손가락의 끝마디의 index
+        self.tipIds = [4, 8, 12, 16, 20, 0] # 각 손가락의 끝마디의 index
 
     def findHands(self, img, draw = True):
         '''
@@ -95,3 +95,17 @@ class handDetector():
             else:
                 fingers.append(0)
         return fingers
+
+        
+    def palmDown(self):
+        '''
+        각 손가락이 펴졌는지 접혀있는지 0과 1로 판단해주는 함수
+        반환값
+            Boolean: control_mode를 나갈 지 여부
+        '''
+        down = False
+        # Thumb[4, 8, 12, 16, 20, 0]
+        if self.lmList[self.tipIds[-1]][2] < self.lmList[self.tipIds[2]][2]:
+            down = True
+        
+        return down
