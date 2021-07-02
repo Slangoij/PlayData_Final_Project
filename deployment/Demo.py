@@ -3,41 +3,30 @@ import GestureModelModule as gmm
 from tensorflow import keras
 import numpy as np
 import cv2
-<<<<<<< Updated upstream
-# from src.user_interface.webcam import DryHand as dr
-=======
 import os
 from Autopy import AutopyClass
->>>>>>> Stashed changes
     
 class demopy():
     def __init__(self):
-        ###########################################
-        # 모델 추론시 변수 초기 셋팅
+        # 웹캡 사이즈 설정 변수
+        self.hCam, self.wCam = 640, 640
+        
+        # 필요한 변수
         self.draw_arr = []
         self.in_check = 0
         self.out_check = 0
         self.control_mode = False
-<<<<<<< Updated upstream
-=======
         self.pyauto = AutopyClass()
         # 모델 관련 변수
->>>>>>> Stashed changes
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
-        self.hCam, self.wCam = 640, 640
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-<<<<<<< Updated upstream
-        self.gesture_model = keras.models.load_model('C:\\Users\\mein0\\01_testFinal\\deployment01\\model\\vgg16_model_4cls_ws_id_2-3_noangle.h5')
-        ###########################################
-=======
         self.gesture_model = keras.models.load_model(r'C:\Users\mein0\01_playdata_final_project\deployment\model\vgg16_model_8cls_2dropnorm_randomsd.h5')
->>>>>>> Stashed changes
 
     def predict(self, img, modeChange):
         # 손 인식시
         img = self.detector.findHands(img)
-        self.landmark_list, bbox = self.detector.findPosition(img, draw=False)
+        self.landmark_list, _ = self.detector.findPosition(img, draw=False)
         action = ''
         imgCanvas = None
         if self.landmark_list:
@@ -57,21 +46,16 @@ class demopy():
             if self.out_check == 10 and self.control_mode:
                 self.control_mode = False
                 if not self.control_mode:
-                    if 20 < len(self.draw_arr) <= 100:
+                    if 30 < len(self.draw_arr) <= 100:
                         # 저장한 좌표로 input 데이터 생성
                         # 모델 추론
-                        self.draw_arr = self.draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외 ## -5
+                        self.draw_arr = self.draw_arr[10:-7] # 앞, 뒤 10 frame 씩 제외 ## -5
                         input_data, imgCanvas = gmm.trans_input(self.draw_arr, self.wCam, self.hCam, self.model_selection)
                         pred, confidence = gmm.predict(self.gesture_model, input_data)
                         
                         if confidence > self.conf_limit:
-<<<<<<< Updated upstream
-                            action = AutopyClass.window_controller(pred)
-                        Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
-=======
                             modes = [self.pyauto.youtube, self.pyauto.webMode, self.pyauto.presentMode]
                             action = modes[modeChange](pred)
->>>>>>> Stashed changes
                     self.draw_arr.clear()
 
         return self.control_mode, action, imgCanvas

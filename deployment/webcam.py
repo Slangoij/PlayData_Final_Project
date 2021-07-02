@@ -2,16 +2,9 @@ from re import S
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-<<<<<<< Updated upstream
-import cv2
-import cv2
-# from src.test import Demo
-import Demo
-=======
 import Demo
 import cv2
 import sys
->>>>>>> Stashed changes
 
 class DryHand(QWidget):
     def __init__(self):
@@ -96,13 +89,8 @@ class DryHand(QWidget):
         self.sldr.resize(100, 25)
         self.sldr.move(self.win_width-105-105-30, self.frame_height + 70)
         self.sldr.setMinimum(1)
-<<<<<<< Updated upstream
-        self.sldr.setMaximum(30)
-        self.sldr.setValue(24)
-=======
         self.sldr.setMaximum(60)
         self.sldr.setValue(35)
->>>>>>> Stashed changes
         self.sldr.valueChanged.connect(self.setFps)
 
         self.sldr1 = QSlider(Qt.Horizontal, self)
@@ -184,7 +172,7 @@ class DryHand(QWidget):
             self.cont = False
             event.accept()
         else:
-            event.ignore
+            event.ignore()
 
     def setFps(self):
         self.fps = self.sldr.value()
@@ -237,11 +225,3 @@ class DryHand(QWidget):
     
     def change_mode(self, mode):
         self.modeChange = mode
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    fontDB = QFontDatabase()
-    fontDB.addApplicationFont('./Bahnschrift.ttf')
-    app.setFont(QFont('Bahnschrift'))
-    ex = DryHand()
-    sys.exit(app.exec_())
