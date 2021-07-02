@@ -1,4 +1,4 @@
-import deployment.HandTrackingModule as htm
+import HandTrackingModule as htm
 import GestureModelModule as gmm
 import AutopyClass
 from tensorflow import keras
@@ -21,7 +21,7 @@ class demopy():
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-        model_path = os.path.abspath('deployment\\model\\vgg16_model_8cls_2dropnorm_randomsd.h5')
+        model_path = os.path.abspath('deployment\\model\\vgg16_model_4cls_ws_id_2-3_noangle.h5')
         self.gesture_model = keras.models.load_model(model_path)
 
     def predict(self, img):
@@ -56,7 +56,6 @@ class demopy():
                         
                         if confidence > self.conf_limit:
                             action = AutopyClass.window_controller(pred)
-                            print(action)
                     self.draw_arr.clear()
 
         return self.control_mode, action, imgCanvas

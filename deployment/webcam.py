@@ -2,7 +2,7 @@ from re import S
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from deployment import Demo
+import Demo
 import cv2
 
 class DryHand(QWidget):
@@ -68,8 +68,8 @@ class DryHand(QWidget):
         self.sldr.resize(100, 25)
         self.sldr.move(self.win_width-105-105-30, self.win_height-self.btn_height*2)
         self.sldr.setMinimum(1)
-        self.sldr.setMaximum(60)
-        self.sldr.setValue(30)
+        self.sldr.setMaximum(30)
+        self.sldr.setValue(24)
         self.sldr.valueChanged.connect(self.setFps)
 
         self.sldr1 = QSlider(Qt.Horizontal, self)
