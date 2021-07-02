@@ -31,3 +31,5 @@ def save_file(Canvas, draw_arr):
     # csv 파일 저장
     df = pd.DataFrame(draw_arr)
     df.to_csv(os.path.join(csv_path, f'Young{t}.csv'), header=False, index=False)
+    numdir = os.listdir(img_path)
+    return len(numdir)

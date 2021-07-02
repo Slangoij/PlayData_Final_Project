@@ -20,6 +20,7 @@ class DryHand(QWidget):
         self.dp = Demo.demopy()
         self.fps = 30
         self.action_label = ''
+        self.confidence = 0
         # 화면관련 설정
         self.bright = 10
         self.win_width = 900
@@ -179,7 +180,7 @@ class DryHand(QWidget):
         _, self.cam = self.cpt.read()
         self.cam = cv2.flip(self.cam, 1)
         self.cam = cv2.add(self.cam, (self.bright,self.bright,self.bright,0))
-        self.control_mode, tmp_action_label, Canvas_img = self.dp.predict(self.cam)
+        self.control_mode, tmp_action_label, confrate, Canvas_img = self.dp.predict(self.cam)
 
         if self.control_mode:
             self.mode2.setText("Action Input")
@@ -191,6 +192,9 @@ class DryHand(QWidget):
         if tmp_action_label:
             self.action_label = tmp_action_label
         self.act2.setText(self.action_label)
+        if confrate > 0:
+            self.confidence = confrate
+        self.act1.setText(str(self.confidence))
         
         # GUI에 이미지 출력
         self.cam = cv2.cvtColor(self.cam, cv2.COLOR_BGR2RGB)

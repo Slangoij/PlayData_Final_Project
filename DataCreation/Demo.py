@@ -16,8 +16,10 @@ class demopy():
         self.out_check = 0
         self.control_mode = False
         self.model_selection = 'CNN'
-        self.conf_limit = 0.90
+        self.conf_limit = 0.80
         self.hCam, self.wCam = 640, 640
+        self.num = 0
+        self.confidence = 0
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
         self.gesture_model = keras.models.load_model('C:\\Users\\mein0\\01_testFinal\\deployment01\\model\\vgg16_model_4cls_ws_id_2-3_noangle.h5')
         ###########################################
@@ -27,6 +29,7 @@ class demopy():
         img = self.detector.findHands(img)
         self.landmark_list, bbox = self.detector.findPosition(img, draw=False)
         action = ''
+ 
         imgCanvas = None
         if self.landmark_list:
             self.out_check = 0
@@ -50,13 +53,13 @@ class demopy():
                         # 모델 추론
                         self.draw_arr = self.draw_arr[10:-7] # 앞, 뒤 10 frame 씩 제외 ## -5
                         input_data, imgCanvas = gmm.trans_input(self.draw_arr, self.wCam, self.hCam, self.model_selection)
-                        pred, confidence = gmm.predict(self.gesture_model, input_data)
+                        pred, self.confidence = gmm.predict(self.gesture_model, input_data)
                         
-
-                        if confidence > self.conf_limit:
-                            action = AutopyClass.window_controller(pred)
-                            draw.save_file(imgCanvas, self.draw_arr)
+                        self.num = draw.save_file(imgCanvas, self.draw_arr)
+                        # if self.confidence > self.conf_limit:
+                            # action = AutopyClass.window_controller(pred)
+  
                         # Canvas = np.zeros((self.wCam, self.hCam, 3), np.uint8)
                     self.draw_arr.clear()
 
-        return self.control_mode, action, imgCanvas
+        return self.control_mode, str(self.num), self.confidence, imgCanvas
