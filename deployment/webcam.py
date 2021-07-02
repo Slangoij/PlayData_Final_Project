@@ -2,31 +2,35 @@ from re import S
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from deployment import Demo
+import Demo
 import cv2
+import sys
 
 class DryHand(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('DryHand')
-        self.setGeometry(150,150,900,540)
+        self.setGeometry(150,150,900,600)
         self.initUI()
     
     def initUI(self):
         self.timer = QTimer()
         self.cpt = cv2.VideoCapture(0)
         self.dp = Demo.demopy()
-        self.fps = 24
+        self.fps = 35
         self.action_label = ''
         # 화면관련 설정
         self.bright = 10
         self.win_width = 900
-        self.win_height = 540
+        self.win_height = 600
         self.frame_width = 640
         self.frame_height = 480
         self.btn_width = int((self.win_width-260)//2)
-        self.btn_height = self.win_height-self.frame_height-20
+        self.btn_height = 40
+        self.btn1_width = int((self.win_width-260)//3)
+        self.btn1_height = 40
         self.center_labels = 75
+        self.modeChange = 0
 
         self.frame = QLabel(self)
         font1 = self.frame.font()
@@ -47,7 +51,6 @@ class DryHand(QWidget):
         self.btn_on.resize(self.btn_width, self.btn_height)
         self.btn_on.setStyleSheet('color: #FCFAFF; background: #159282')
         self.btn_on.move(5, self.frame_height + 10)
-        # self.btn_on.clicked.connect(self.loadModel)
         self.btn_on.clicked.connect(self.start)
 
         self.btn_off = QPushButton("Stop Cam", self)
@@ -55,6 +58,24 @@ class DryHand(QWidget):
         self.btn_off.setStyleSheet('color: #FCFAFF; background: #159282')
         self.btn_off.move(5 + self.btn_width + 5, self.frame_height + 10)
         self.btn_off.clicked.connect(self.stop)
+
+        self.btn_mode1 = QPushButton("Youtube Mode", self)
+        self.btn_mode1.resize(self.btn1_width, self.btn1_height)
+        self.btn_mode1.setStyleSheet('color: #FCFAFF; background: #159282')
+        self.btn_mode1.move(5, self.frame_height + 60)
+        self.btn_mode1.clicked.connect(lambda: self.change_mode(0))
+
+        self.btn_mode2 = QPushButton("Web Mode", self)
+        self.btn_mode2.resize(self.btn1_width, self.btn1_height)
+        self.btn_mode2.setStyleSheet('color: #FCFAFF; background: #159282')
+        self.btn_mode2.move(5 + self.btn1_width+2.5, self.frame_height + 60)
+        self.btn_mode2.clicked.connect(lambda: self.change_mode(1))
+
+        self.btn_mode3 = QPushButton("Presentation Mode", self)
+        self.btn_mode3.resize(self.btn1_width, self.btn1_height)
+        self.btn_mode3.setStyleSheet('color: #FCFAFF; background: #159282')
+        self.btn_mode3.move(5 + (self.btn1_width*2)+5, self.frame_height + 60)
+        self.btn_mode3.clicked.connect(lambda: self.change_mode(2))
 
         self.prt = QLabel(self)
         font2 = self.prt.font()
@@ -66,15 +87,15 @@ class DryHand(QWidget):
 
         self.sldr = QSlider(Qt.Horizontal, self)
         self.sldr.resize(100, 25)
-        self.sldr.move(self.win_width-105-105-30, self.win_height-self.btn_height*2)
+        self.sldr.move(self.win_width-105-105-30, self.frame_height + 70)
         self.sldr.setMinimum(1)
         self.sldr.setMaximum(60)
-        self.sldr.setValue(30)
+        self.sldr.setValue(35)
         self.sldr.valueChanged.connect(self.setFps)
 
         self.sldr1 = QSlider(Qt.Horizontal, self)
         self.sldr1.resize(100, 25)
-        self.sldr1.move(self.win_width-105-10, self.win_height-self.btn_height*2)
+        self.sldr1.move(self.win_width-105-10, self.frame_height + 70)
         self.sldr1.setMinimum(-100)
         self.sldr1.setMaximum(100)
         self.sldr1.setValue(0)
@@ -177,7 +198,7 @@ class DryHand(QWidget):
         _, self.cam = self.cpt.read()
         self.cam = cv2.flip(self.cam, 1)
         self.cam = cv2.add(self.cam, (self.bright,self.bright,self.bright,0))
-        self.control_mode, tmp_action_label, Canvas_img = self.dp.predict(self.cam)
+        self.control_mode, tmp_action_label, Canvas_img = self.dp.predict(self.cam, self.modeChange)
 
         if self.control_mode:
             self.mode2.setText("Action Input")
@@ -201,4 +222,6 @@ class DryHand(QWidget):
             img_canvas = QImage(img_canvas, img_canvas.shape[1], img_canvas.shape[0], QImage.Format_RGB888)
             img_canvas = QPixmap.fromImage(img_canvas)
             self.frame1.setPixmap(img_canvas)
-
+    
+    def change_mode(self, mode):
+        self.modeChange = mode

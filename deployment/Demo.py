@@ -1,10 +1,10 @@
-import deployment.HandTrackingModule as htm
+import HandTrackingModule as htm
 import GestureModelModule as gmm
-import AutopyClass
 from tensorflow import keras
 import numpy as np
 import cv2
 import os
+from Autopy import AutopyClass
     
 class demopy():
     def __init__(self):
@@ -16,15 +16,14 @@ class demopy():
         self.in_check = 0
         self.out_check = 0
         self.control_mode = False
-
+        self.pyauto = AutopyClass()
         # 모델 관련 변수
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-        model_path = os.path.abspath('deployment\\model\\vgg16_model_8cls_2dropnorm_randomsd.h5')
-        self.gesture_model = keras.models.load_model(model_path)
+        self.gesture_model = keras.models.load_model(r'C:\Users\mein0\01_playdata_final_project\deployment\model\vgg16_model_8cls_2dropnorm_randomsd.h5')
 
-    def predict(self, img):
+    def predict(self, img, modeChange):
         # 손 인식시
         img = self.detector.findHands(img)
         self.landmark_list, _ = self.detector.findPosition(img, draw=False)
@@ -59,7 +58,8 @@ class demopy():
                         pred, confidence = gmm.predict(self.gesture_model, input_data)
                         
                         if confidence > self.conf_limit:
-                            action = AutopyClass.window_controller(pred)
+                            modes = [self.pyauto.youtube, self.pyauto.webMode, self.pyauto.presentMode]
+                            action = modes[modeChange](pred)
                     self.draw_arr.clear()
 
         return self.control_mode, action, imgCanvas

@@ -45,10 +45,20 @@ def save_file(Canvas, draw_arr, pred=None):
         os.makedirs(img_path, exist_ok=True)
         os.makedirs(csv_path, exist_ok=True)
     
+#     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+#     # 이미지 파일 저장
+#     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
+#     # csv 파일 저장
+#     df = pd.DataFrame(draw_arr)
+#     df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
+
+def save_file(Canvas, draw_arr):
+    img_path = './model/data/img/'
+    csv_path = './model/data/csv/'  
+
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장
-    cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
+    cv2.imwrite(os.path.join(img_path, f'Young{t}.png'), Canvas)
     # csv 파일 저장
     df = pd.DataFrame(draw_arr)
-    df.to_csv(os.path.join(csv_path, f'{t}.csv'), header=False, index=False)
-
+    df.to_csv(os.path.join(csv_path, f'Young{t}.csv'), header=False, index=False)
