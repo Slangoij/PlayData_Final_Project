@@ -42,7 +42,6 @@ def save_file(Canvas, draw_arr, pred=None):
         label = labels[pred]
         img_path = os.path.join(img_path, label)
         csv_path = os.path.join(csv_path, label)
-        print(img_path)
         os.makedirs(img_path, exist_ok=True)
         os.makedirs(csv_path, exist_ok=True)
     
