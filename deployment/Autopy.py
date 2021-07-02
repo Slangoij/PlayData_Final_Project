@@ -28,9 +28,9 @@ class AutopyClass():
             pyautogui.press('enter')
         
         elif pred == control_action_list.index('광고스킵'):
-            point_to_click = pyautogui.locateCenterOnScreen(r'C:\Users\mein0\01_playdata_final_project\deployment\skip_btn.PNG',confidence=0.8)
+            point_to_click = pyautogui.locateCenterOnScreen('img/skip_btn.PNG',confidence=0.8)
             if point_to_click == None:
-                point_to_click = pyautogui.locateCenterOnScreen(r'C:\Users\mein0\01_playdata_final_project\deployment\skipadd.PNG',confidence=0.8)
+                point_to_click = pyautogui.locateCenterOnScreen('img/skipadd.PNG',confidence=0.8)
             if point_to_click:
                 pyautogui.click(point_to_click)
         
