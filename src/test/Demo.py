@@ -27,7 +27,6 @@ cap.set(4, hCam)
 draw_arr = []
 in_check = 0
 out_check = 0
-control_mode = False
 
 while True:
     success, img = cap.read()
@@ -41,34 +40,28 @@ while True:
     if landmark_list:
         out_check = 0
         fingers = detector.fingersUp()
-        if 1 not in fingers[1:]:
-            # 주먹 쥐면 검지의 좌표 저장
-            in_check += 1
-            if in_check == 10:
-                in_check = 0
-                control_mode = True
+        # 검지 손가락만 펴져있으면 control mode
+        control_mode = (fingers[1] == 1) and (1 not in fingers[2:])
         if control_mode:
             draw_arr.append(landmark_list[8][1:])
             cv2.circle(img, tuple(landmark_list[8][1:]), 7, (255,0,0), cv2.FILLED)
     else:
         # 손 인식 안되면
         out_check += 1
-        if out_check == 10 and control_mode:
-            control_mode = False
-            if not control_mode:
-                if 20 < len(draw_arr) <= 100:
-                    # 저장한 좌표로 input 데이터 생성
-                    # 모델 추론
-                    draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
-                    input_data, imgCanvas = gmm.trans_input(draw_arr, wCam, hCam, model_selection)
-                    pred, confidence = gmm.predict(gesture_model, input_data)
-                    
-                    # 예측률 75% 이상 input 데이터 저장
-                    if confidence > conf_limit:
-                        AutopyClass.window_controller(pred)
-                        draw.save_file(imgCanvas, draw_arr, pred)
-                    Canvas = np.zeros((wCam, hCam, 3), np.uint8)
-                draw_arr.clear()
+        if out_check == 10:
+            if 30 < len(draw_arr) <= 100:
+                # 저장한 좌표로 input 데이터 생성
+                draw_arr = draw_arr[10:-10] # 앞, 뒤 10 frame 씩 제외
+                # 모델 추론
+                input_data, imgCanvas = gmm.trans_input(draw_arr, wCam, hCam, model_selection)
+                pred, confidence = gmm.predict(gesture_model, input_data)
+                
+                # 예측률 75% 이상 input 데이터 저장
+                if confidence > conf_limit:
+                    AutopyClass.window_controller(pred)
+                    draw.save_file(imgCanvas, draw_arr, pred)
+                Canvas = np.zeros((wCam, hCam, 3), np.uint8)
+            draw_arr.clear()
 
     cv2.imshow('img', img)
     cv2.waitKey(1)
