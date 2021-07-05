@@ -13,7 +13,6 @@ class demopy():
         # 필요한 변수
         self.draw_arr = []
         self.out_check = 0
-        self.control_mode = False
         # 모델 관련 변수
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
@@ -27,12 +26,13 @@ class demopy():
         self.landmark_list, _ = self.detector.findPosition(img, draw=False)
         action = ''
         imgCanvas = None
+        control_mode = False
         if self.landmark_list:
             self.out_check = 0
             self.fingers = self.detector.fingersUp()
             # 검지만 펴졌을때만 control mode
-            self.control_mode = (self.fingers[1] == 1) and (1 not in self.fingers[2:])
-            if self.control_mode:
+            control_mode = (self.fingers[1] == 1) and (1 not in self.fingers[2:])
+            if control_mode:
                 self.draw_arr.append(self.landmark_list[8][1:])
                 cv2.circle(img, tuple(self.landmark_list[8][1:]), 7, (255,0,0), cv2.FILLED)
         else:
@@ -49,4 +49,4 @@ class demopy():
                         action = AutopyClass.window_controller(pred)
                 self.draw_arr.clear()
 
-        return self.control_mode, action, imgCanvas
+        return control_mode, action, imgCanvas
