@@ -21,7 +21,7 @@ class demopy():
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-        self.gesture_model = keras.models.load_model(r'E:\Users\inje\교육\202012_국비지원 IT교육\PlayData_Final_Project\deployment\model\vgg16_model_8cls_2dropnorm_randomsd.h5')
+        self.gesture_model = keras.models.load_model(r'C:\Users\inje.jeong\05_Final_project\deployment\model\vgg16_model_8cls_2dropnorm_randomsd.h5')
 
     def predict(self, img, modeChange):
         # 손 인식시
