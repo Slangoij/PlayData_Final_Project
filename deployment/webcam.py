@@ -17,7 +17,7 @@ class DryHand(QWidget):
         self.timer = QTimer()
         self.cpt = cv2.VideoCapture(0)
         self.dp = Demo.demopy()
-        self.fps = 35
+        self.fps = 40
         self.action_label = ''
         # 화면관련 설정
         self.bright = 10
@@ -90,7 +90,7 @@ class DryHand(QWidget):
         self.sldr.move(self.win_width-105-105-30, self.frame_height + 70)
         self.sldr.setMinimum(1)
         self.sldr.setMaximum(60)
-        self.sldr.setValue(35)
+        self.sldr.setValue(40)
         self.sldr.valueChanged.connect(self.setFps)
 
         self.sldr1 = QSlider(Qt.Horizontal, self)

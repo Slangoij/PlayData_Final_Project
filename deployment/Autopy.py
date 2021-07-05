@@ -28,9 +28,11 @@ class AutopyClass():
             pyautogui.press('enter')
         
         elif pred == control_action_list.index('광고스킵'):
-            point_to_click = pyautogui.locateCenterOnScreen(r'C:\Users\inje.jeong\05_Final_project\deployment\skipadd.png',confidence=0.8)
-            # print(point_to_click)
-            pyautogui.click(point_to_click)
+            point_to_click = pyautogui.locateCenterOnScreen('images/skip_btn.PNG',confidence=0.5)
+            if point_to_click == None:
+                point_to_click = pyautogui.locateCenterOnScreen('images/skipadd.PNG',confidence=0.5)
+            if point_to_click:
+                pyautogui.click(point_to_click)
         
         elif pred == control_action_list.index('다음영상')\
             or pred == control_action_list.index('이전페이지'):
