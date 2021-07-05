@@ -7,7 +7,7 @@ def window_controller(pred):
     # 유튜브 모드
     control_list = ['l', 'j', 'k', 'f', ['ctrl','l'], '', ['shift','n'], ['alt','left']]
     control_action_list = ['10초 이후', '10초 이전', '일시정지/재생', '전체화면/원상복구',
-                           '유튜브 켜기', '광고스킵', '다음영상', '이전페이지']
+                            '유튜브 켜기', '광고스킵', '다음영상', '이전페이지']
     # j : 10초 이전, l : 10초 이후, k : 일시정지 / 재생, f : 전체화면 / 원상복구
     if pred == control_action_list.index('유튜브 켜기'):
         if gw.getWindowsWithTitle('Chrome'): # 윈도우 타이틀에 Chrome 이 포함된 모든 윈도우 수집, 리스트로 리턴
