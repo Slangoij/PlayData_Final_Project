@@ -1,2 +1,8 @@
-.vscode/
+.*
+!.gitignore
 __pycache__/
+DataCreation/
+img/
+csv/
+dist/
+build/

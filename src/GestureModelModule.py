@@ -1,16 +1,14 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
-from tensorflow import keras
-from src.AutopyClass import window_controller
 from common import draw
 import numpy as np
 import cv2
 
-def trans_input(draw_arr, x_size, y_size, CNN=None, RNN=None):
+def trans_input(draw_arr, x_size, y_size, model_selection):
         '''
         모델의 input값에 맞게 전처리
         input parameter 
             제스처 이동 좌표(draw_arr), 
-            이미지 사이즈(img height, width),
+            이미지 사이즈(width, height),
             모델 선택(CNN, RNN)
         return value
             ret == model input 값
@@ -21,19 +19,18 @@ def trans_input(draw_arr, x_size, y_size, CNN=None, RNN=None):
             Canvas = np.zeros((y_size, x_size, 3), np.uint8)
             Canvas = draw.draw_canvas(Canvas, len(draw_arr), draw_arr)
             origin_canvas = Canvas.copy()
+            model_selection = model_selection.upper()
             # CNN
-            if CNN:
+            if model_selection == 'CNN':
                 Canvas = cv2.resize(Canvas, (224, 224))
                 Canvas = img_to_array(Canvas)
                 Canvas = Canvas[np.newaxis, ...]
                 ret = Canvas/255.
             # RNN
-            elif RNN:
+            elif model_selection == 'RNN':
                 draw_arr += [[0, 0]] * (80 - len(draw_arr))
                 input_arr = np.array(draw_arr)
-                input_arr[:][0] = input_arr[0] / x_size
-                input_arr[:][1] = input_arr[1] / y_size
-                print(input_arr[0], '<<<<<<<<<<<<<<<<')
+                input_arr = input_arr / x_size
                 ret = input_arr[np.newaxis, ...]
             return ret, origin_canvas
         except:
@@ -53,6 +50,5 @@ def predict(gesture_model, input_data):
     idx = np.argmax(pred[0])
     maxRound = np.round(max(pred[0]), 2)
 
-    print(maxRound)
-    window_controller(idx)
+    print(maxRound, idx)
     return idx, maxRound
