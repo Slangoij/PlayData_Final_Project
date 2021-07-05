@@ -3,7 +3,7 @@
 --------------
 
 
-## 프로젝트 소개
+## 1. 프로젝트 소개
 
 > - 개요
 >     - 웹캠으로 사용자의 손의 특정 행위를 인식하여 단축키 수행
@@ -13,7 +13,7 @@
 >     - 손으로 어플리케이션을 작동하기 어려운 경우, “Dry Hand”를 이용하여 간단하게 어플리케이션을 제어할 수 있도록 돕고자 합니다.
 
 
-## 기술 스택 및 모델 구조
+## 2. 기술 스택 및 모델 구조
 
 -----------
 
@@ -21,7 +21,7 @@
 
 
 
-## Dry Hand 실행 설명
+## 3. Dry Hand 실행 설명
 
 ---------
 
@@ -32,36 +32,36 @@
     - `main.py` 실행
 
 
-## 디렉토리 구조
+## 4. 디렉토리 구조
 
 ---------
 
 ```bash
-├── common                    - model, src에 공통으로 쓰이는 module
-│     ├── draw                - img 데이터 생성, 데이터 저장
-│     └── HandTrackingModule  - 손 인식 모듈
+├── common                       - model, src에 공통으로 쓰이는 module
+│     ├── draw.py                - img 데이터 생성, 데이터 저장
+│     └── HandTrackingModule.py  - 손 인식 모듈
 │
-├── deployment                - 배포용 디렉토리
+├── deployment                   - 배포용 디렉토리
 │
 ├── model
 │     ├── data
-│     │    ├── csv            - 비정제, 정제, temp (-> 추론 데이터)
-│     │    └── img            - 비정제, 정제, temp (-> 추론 데이터)
-│     ├── process             - 각 모델별(VGG, MobilNetV2, LSTM) 생성 파일
-│     ├── saved_model         - 학습된 모델 저장 directory
-│     └── preprocessing.py    - 학습 데이터 생성 file
+│     │    ├── csv               - 비정제, 정제, temp (-> 추론 데이터)
+│     │    └── img               - 비정제, 정제, temp (-> 추론 데이터)
+│     ├── process                - 각 모델별(VGG, MobilNetV2, LSTM) 생성 파일
+│     ├── saved_model            - 학습된 모델 저장 directory
+│     └── preprocessing.py       - 학습 데이터 생성 file
 │
 ├── src
-     ├── test                 - test를 위한 directory
-     ├── AutopyClass.py       - window controller
-     └── GestureModule.py     - 모델 input 값 전처리, 추론 함수 정의
+     ├── test                    - test를 위한 directory
+     ├── AutopyClass.py          - window controller
+     └── GestureModule.py        - 모델 input 값 전처리, 추론 함수 정의
 ```
 
-## Dry Hand Project 기능 설명
+## 5. Dry Hand Project 기능 설명
 
 -------------
 
-### [mode 선택 기능]
+### 5-1. [mode 선택 기능]
 -------------
 1. 유튜브 모드 
     
@@ -78,7 +78,7 @@
     
     | 기능 | 제스처 |
     | -- | -- |
-    | 10초 전/후 이동 | `<`, `>` |
+    | 이전/다음 페이지 이동 | `<`, `>` |
     | 크롬창 켜기/끄기 | `S`, `W` |
 
 3. 프레젠테이션 모드
@@ -89,28 +89,21 @@
     | 파워포인트 전체창 | `S` |
     | 전체창 나오기 | `W` |
 
-### [기타 편의 기능]
+### 5-2. [기타 편의 기능]
 -------------
 1. Play Button -> 동작인식 및 동작인식 확인용 디스플레이 시작
 2. Stop Button -> 동작인식 및 디스플레이 중지
 3. 프레임 수 조절 -> 초당 이미지의 수를 조절가능
 4. 명암 조절 -> 웹캠에서 받아들이는 이미지의 명암 조절 가능
 
-
-## 예상 결과물
-
----------
-
-![2021-06-23 22;23;57](https://user-images.githubusercontent.com/71580318/123104237-ba7bca80-d471-11eb-86de-1765494aaff0.PNG)
-
-### Dry Hand UI
+## 6. Dry Hand UI
 
 ---------
 
 ![image](https://user-images.githubusercontent.com/77317312/124409338-1e13cb00-dd83-11eb-8c8d-13e56986a116.png)
 
   
-## 참고 자료
+## 7. 참고 자료
 ---------------
 - [virtual painter](https://www.youtube.com/watch?v=ZiwZaAVbXQo)
 - [Real-Time Hand Gesture 논문](https://www.koreascience.or.kr/article/JAKO201919866854640.pdf)
