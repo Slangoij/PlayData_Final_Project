@@ -1,26 +1,26 @@
-import deployment.HandTrackingModule as htm
+import HandTrackingModule as htm
 import GestureModelModule as gmm
-import AutopyClass
 from tensorflow import keras
+import numpy as np
 import cv2
-import os
-    
+from Autopy import AutopyClass
+ 
 class demopy():
     def __init__(self):
         # 웹캡 사이즈 설정 변수
-        self.hCam, self.wCam = 640, 640
-        
+        self.hCam, self.wCam = 640, 640     
         # 필요한 변수
         self.draw_arr = []
+        self.in_check = 0
         self.out_check = 0
+        self.pyauto = AutopyClass()
         # 모델 관련 변수
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.detector = htm.handDetector(maxHands=1, detectionCon=0.75)
-        model_path = os.path.abspath('deployment\\model\\vgg16_model_8cls_2dropnorm_randomsd.h5')
-        self.gesture_model = keras.models.load_model(model_path)
+        self.gesture_model = keras.models.load_model('model/vgg16_model_8cls_2dropnorm_randomsd.h5')
 
-    def predict(self, img):
+    def predict(self, img, modeChange):
         # 손 인식시
         img = self.detector.findHands(img)
         self.landmark_list, _ = self.detector.findPosition(img, draw=False)
@@ -30,8 +30,8 @@ class demopy():
         if self.landmark_list:
             self.out_check = 0
             self.fingers = self.detector.fingersUp()
-            # 검지만 펴졌을때만 control mode
-            control_mode = (self.fingers[1] == 1) and (1 not in self.fingers[2:])
+            # 검지가 펴졌을때만 control mode
+            control_mode = (self.fingers[1]==1) and (1 not in self.fingers[2:])
             if control_mode:
                 self.draw_arr.append(self.landmark_list[8][1:])
                 cv2.circle(img, tuple(self.landmark_list[8][1:]), 7, (255,0,0), cv2.FILLED)
@@ -46,7 +46,8 @@ class demopy():
                     pred, confidence = gmm.predict(self.gesture_model, input_data)
                     
                     if confidence > self.conf_limit:
-                        action = AutopyClass.window_controller(pred)
+                        modes = [self.pyauto.youtube, self.pyauto.webMode, self.pyauto.presentMode]
+                        action = modes[modeChange](pred)
                 self.draw_arr.clear()
 
         return control_mode, action, imgCanvas
