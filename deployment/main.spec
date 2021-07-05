@@ -12,7 +12,7 @@ def get_mediapipe_path():
     return mediapipe_path
 
 added_files = [
-    ('img/*.PNG','images'),
+    ('images/*.PNG','images'),
     ('model/vgg16_model_8cls_2dropnorm_randomsd.h5', 'model'),
     (os.path.join(os.path.dirname(importlib.import_module('tensorflow').__file__),"lite/experimental/microfrontend/python/ops/_audio_microfrontend_op.so"),"tensorflow/lite/experimental/microfrontend/python/ops/")
 ]
