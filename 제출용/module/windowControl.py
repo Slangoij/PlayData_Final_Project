@@ -1,6 +1,6 @@
+import pygetwindow as gw
 import pyautogui
 import pywinauto
-import pygetwindow as gw
 import time
 
 class WindowController():

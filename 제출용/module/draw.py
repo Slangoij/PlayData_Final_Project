@@ -1,7 +1,7 @@
+import pandas as pd
+import datetime
 import cv2
 import os
-import datetime
-import pandas as pd
 
 def draw_canvas(img, frame_cnt, draw_arr):
     '''
@@ -22,9 +22,9 @@ def draw_canvas(img, frame_cnt, draw_arr):
     return img
 
 def save_file(Canvas, draw_arr, pred=None):
-    img_path = './model/data/img/temp'
-    csv_path = './model/data/csv/temp'
-    data_path = './model/data/img/8_label_data'
+    img_path = './data/img/temp'
+    csv_path = './data/csv/temp'
+    data_path = './data/img/8_label_data'
     '''
     if label:
         모델이 예측한 라벨로 데이터 저장

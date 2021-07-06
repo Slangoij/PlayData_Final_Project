@@ -1,9 +1,9 @@
-import handTrackingModule as htm
-import gestureModelModule as gmm
+from module.windowControl import WindowController
+from module import handTrackingModule as htm
+from module import gestureModelModule as gmm
+from module import draw
 from tensorflow import keras
-import draw
 import cv2
-from windowControl import WindowController
 
 class Gesture():
     def __init__(self):

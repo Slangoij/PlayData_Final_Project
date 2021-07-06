@@ -1,6 +1,6 @@
 from tensorflow.python.keras.preprocessing.image import img_to_array
+from module import draw
 import numpy as np
-import draw
 import cv2
 
 def trans_input(draw_arr, x_size, y_size, model_selection):
