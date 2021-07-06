@@ -1,0 +1,11 @@
+# exe 변환 필요 라이브러리
+tensorflow==2.3
+opencv==4.4.0
+mediapipe==0.8.5
+keras==2.3.1
+PyQt5 5.9.2
+pyinstaller==4.3
+pywinauto==0.6.8
+pandas
+numpy
+
