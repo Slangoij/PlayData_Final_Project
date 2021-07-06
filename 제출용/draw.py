@@ -38,13 +38,12 @@ def save_file(Canvas, draw_arr, pred=None):
     refined_data에 최신 디렉토리 구성으로 저장하기 # 현재 [01next_img, 02previous_img, ...]
     '''
     labels = os.listdir(data_path)
-    if pred and pred < len(labels):
+    if str(pred).isdigit() and pred < len(labels):
         label = labels[pred]
         img_path = os.path.join(img_path, label)
         csv_path = os.path.join(csv_path, label)
         os.makedirs(img_path, exist_ok=True)
         os.makedirs(csv_path, exist_ok=True)
-    
     t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     # 이미지 파일 저장
     cv2.imwrite(os.path.join(img_path, f'{t}.png'), Canvas)
