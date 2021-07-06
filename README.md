@@ -12,7 +12,17 @@
 > - 목적
 >     - 손으로 어플리케이션을 작동하기 어려운 경우, “Dry Hand”를 이용하여 간단하게 어플리케이션을 제어할 수 있도록 돕고자 합니다.
 
-
+### 1-1. 환경 설정
+> - `requirements.txt`있는 디렉토리 안에서 명령프롬프트 실행
+> - 가상환경 생성 및 지정 (파이썬 3.8버전으로)
+> ```python
+> # 가상환경 설정
+> conda create -n test python=3.8
+> conda activate test
+> 
+> # 라이브러리 install
+> pip install -r requirements.txt
+> ```
 ## 2. 기술 스택 및 모델 구조
 
 -----------
