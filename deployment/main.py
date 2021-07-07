@@ -1,5 +1,9 @@
 from PyQt5.QtGui import QFont, QFontDatabase
+<<<<<<< HEAD
 from webcam import DryHand
+=======
+from userInterface import DryHand
+>>>>>>> develop
 from PyQt5.QtWidgets import *
 import sys
 

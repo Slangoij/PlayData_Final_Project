@@ -2,7 +2,11 @@ import mediapipe as mp2
 mp = mp2.solutions.mediapipe.python
 import cv2
 
+<<<<<<< HEAD
 class handDetector():
+=======
+class HandDetector():
+>>>>>>> develop
     '''
     함수 정리
         findHands : 이미지에서 손을 찾아주는 함수
