@@ -22,9 +22,9 @@ def draw_canvas(img, frame_cnt, draw_arr):
     return img
 
 def save_file(Canvas, draw_arr, pred=None):
-    img_path = './data/img/temp'
-    csv_path = './data/csv/temp'
-    data_path = './data/img/8_label_data'
+    img_path = './data/image/temp'
+    csv_path = './data/csvfiles/temp'
+    data_path = './data/image/8_label_data'
     '''
     if label:
         모델이 예측한 라벨로 데이터 저장

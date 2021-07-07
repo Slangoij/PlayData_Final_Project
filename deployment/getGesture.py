@@ -17,7 +17,7 @@ class Gesture():
         self.model_selection = 'CNN'
         self.conf_limit = 0.75
         self.detector = htm.HandDetector(maxHands=1, detectionCon=0.75)
-        self.gesture_model = keras.models.load_model('model/vgg16_model_8cls_2dropnorm_randomsd.h5')
+        self.gesture_model = keras.models.load_model('model/VGGColab-2021-07-06_08-26-05.h5')
 
     def predict(self, img, modeChange):
         # 손 인식시
