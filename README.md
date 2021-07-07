@@ -47,24 +47,29 @@
 ---------
 
 ```bash
-├── common                       - model, src에 공통으로 쓰이는 module
-│     ├── draw.py                - img 데이터 생성, 데이터 저장
-│     └── HandTrackingModule.py  - 손 인식 모듈
+├── deployment                            - 배포용 디렉토리
 │
-├── deployment                   - 배포용 디렉토리
+├── pre_productVersion
+│         │
+│         ├── common  -> [model, src에 공통으로 쓰이는 module]
+│         │    │
+│         │    ├── draw.py                - img 데이터 생성, 데이터 저장
+│         │    └── HandTrackingModule.py  - 손 인식 모듈
+│         │
+│         ├── model   -> [transfer learning을 위한 디렉토리]
+│         │    │
+│         │    ├── data/                  - 학습용 데이터
+│         │    ├── process/               - 각 모델별(VGG, MobilNetV2, LSTM) 생성 파일
+│         │    ├── saved_model/           - 학습된 모델 저장 directory
+│         │    └── preprocessing.py       - 학습 데이터 생성 file
+│         │
+│         └── src     -> [DryHand app기능 구현 모듈 디렉토리]
+│              │
+│              ├── test/                  - 개발을 위한 test directory
+│              ├── AutopyClass.py         - window controller
+│              └── GestureModule.py       - 모델 input 값 전처리, 추론 함수 정의
 │
-├── model
-│     ├── data
-│     │    ├── csv               - 비정제, 정제, temp (-> 추론 데이터)
-│     │    └── img               - 비정제, 정제, temp (-> 추론 데이터)
-│     ├── process                - 각 모델별(VGG, MobilNetV2, LSTM) 생성 파일
-│     ├── saved_model            - 학습된 모델 저장 directory
-│     └── preprocessing.py       - 학습 데이터 생성 file
-│
-├── src
-     ├── test                    - test를 위한 directory
-     ├── AutopyClass.py          - window controller
-     └── GestureModule.py        - 모델 input 값 전처리, 추론 함수 정의
+└── 제출용                                - 프로젝트 주요 파일 정리 디렉토리
 ```
 
 ## 5. Dry Hand Project 기능 설명
