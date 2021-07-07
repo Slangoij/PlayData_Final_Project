@@ -71,7 +71,7 @@ class WindowController():
 
     def presentMode(self, pred):
         if pred < 4:
-            control_list = [['right',""], ['left',""],['ctrl','f5'], ['esc',""]]
+            control_list = [['right',""], ['left',""],['shift','f5'], ['esc',""]]
             control_action_list = ['다음', '이전', '전체창', '전체창끄기']
             pyautogui.hotkey(control_list[pred][0], control_list[pred][1])
             return control_action_list[pred]
